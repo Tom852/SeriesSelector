@@ -16,16 +16,19 @@
         </LinearGradientBrush>
     </Window.Background>
 
-    <Grid Margin="0,0,2,0">
-        <Button Content="Star Trek" HorizontalAlignment="Left" Margin="125,138,0,0" VerticalAlignment="Top" Width="134" Height="71" Click="TopLaunch" Background="Black" Foreground="White" FontSize="16pt"/>
-        <Button Content="2.5 Men" HorizontalAlignment="Left" Margin="125,254,0,0" VerticalAlignment="Top" Width="134" Height="72" Click="BotLaunch" Background="Aqua" FontSize="16pt"/>
-        <Button Content="&lt;" HorizontalAlignment="Left" Margin="53,164,0,0" VerticalAlignment="Top" Width="20" Click="TopDec" MouseRightButtonDown="TopDec2"/>
-        <Button Content="&gt;" HorizontalAlignment="Left" Margin="297,164,0,0" VerticalAlignment="Top" Width="20" Click="TopInc" MouseRightButtonDown="TopInc2"/>
-        <Button Content="&lt;" HorizontalAlignment="Left" Margin="53,280,0,0" VerticalAlignment="Top" Width="20" Click="BotDec" MouseRightButtonDown="BotDec2" />
-        <Button Content="&gt;" HorizontalAlignment="Left" Margin="297,280,0,0" VerticalAlignment="Top" Width="20" Click="BotInc" MouseRightButtonDown="BotInc2"/>
-        <Label Content="Select a Series to play" HorizontalAlignment="Left" Margin="39,28,0,0" VerticalAlignment="Top" FontSize="24 pt"/>
-        <Label Name = "LabelTop" Content="Label" HorizontalAlignment="Left" Margin="349,149,0,0" VerticalAlignment="Top" Width="1241" FontSize="28pt"/>
-        <Label Name = "LabelBot" Content="Label" HorizontalAlignment="Left" Margin="349,266,0,0" VerticalAlignment="Top" Width="1241" FontSize="28pt"/>
-
-    </Grid>
+    <StackPanel Orientation="Vertical">
+        <Label Content="Select a Series to play" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="24 pt" Margin="0,0,0,20" FontWeight="Heavy"/>
+        <ListView ItemsSource="{Binding SeriesList}" HorizontalAlignment="Stretch" Background="Transparent" BorderBrush="Transparent">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Name="DecBtn" Content="&lt;" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0" Width="20" />
+                        <Button Name="PlayBtn" Content="{Binding SeriesNameAsString}" VerticalAlignment="Center" Width="150" Height="75" Margin="10,10" FontWeight="Bold" FontSize="16pt" Background="{Binding GetAColorBrush}"/>
+                        <Button Name="IncBtn" Content="&gt;" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0" Width="20"/>
+                        <Label Name = "Label" Content="{Binding CurrentEpisodeAsString}" VerticalAlignment="Center" Margin="10,0" FontSize="28pt"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackPanel>
 </Window>
