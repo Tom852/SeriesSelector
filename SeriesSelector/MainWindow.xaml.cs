@@ -9,12 +9,15 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Serialization;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using MessageBox = System.Windows.MessageBox;
 using Path = System.IO.Path;
 
 namespace SeriesSelector
@@ -125,8 +128,19 @@ namespace SeriesSelector
                 e.Handled = true;
                 return;
             }
-            var item = (ListView.SelectedItem as FrameworkElement).DataContext;
+            var item = ListView.SelectedItem;
             int index = ListView.Items.IndexOf(item);
+            string seriesToDelete = Model.SeriesList[index].SeriesNameAsString;
+
+            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show($"Delete {seriesToDelete} ?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                Model.SeriesList.RemoveAt(index);
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("Delete operation Terminated");
+            }
         }
     }
 }
