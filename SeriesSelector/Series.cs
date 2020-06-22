@@ -12,6 +12,8 @@ using SeriesSelector.Annotations;
 
 namespace SeriesSelector
 {
+
+    [Serializable]
     public class Series : INotifyPropertyChanged
     {
 
@@ -106,6 +108,10 @@ namespace SeriesSelector
         {
             FilesystemPath = filepath;
             CurrentIndex = 0;
+        }
+
+        public Series()
+        {
         }
 
 

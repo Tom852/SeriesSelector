@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace SeriesSelector
 {
+    [Serializable]
     public class SeriesViewModel
     {
         public ObservableCollection<Series> SeriesList { get; set; } = new ObservableCollection<Series>();

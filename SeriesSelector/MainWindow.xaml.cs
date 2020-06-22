@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Serialization;
+using Path = System.IO.Path;
 
 namespace SeriesSelector
 {
@@ -21,15 +24,40 @@ namespace SeriesSelector
     /// </summary>
     public partial class MainWindow : Window
     {
-        public SeriesViewModel Model = new SeriesViewModel();
+        public SeriesViewModel Model { get; set; }
+        private readonly string persistenceFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TomsSeriesShit/SeriesPicker.data");
         public MainWindow()
         {
+
             InitializeComponent();
+
+            if (File.Exists(persistenceFile))
+            {
+                string xml = File.ReadAllText(persistenceFile);
+                TextReader tr = new StringReader(xml);
+
+                var s = new XmlSerializer(typeof(SeriesViewModel));
+                var data = (SeriesViewModel) s.Deserialize(tr);
+                Model = data;
+            }
+            else
+            {
+                Model = new SeriesViewModel();
+            }
             DataContext = Model;
-            var tng = new Series(@"F:\New Files\_series\Star Trek xD\TNG");
-            var twomen = new Series(@"E:\Serien\Two And A Half Men");
-            Model.SeriesList.Add(tng);
-            Model.SeriesList.Add(twomen);
+
+            Closing += (sender, args) => PersistData();
+        }
+
+        private void PersistData()
+        {
+            var s = new XmlSerializer(typeof(SeriesViewModel));
+            StringBuilder sb = new StringBuilder();
+            StringWriter sw = new StringWriter(sb);
+            s.Serialize(sw, Model);
+            string xmlResult = sw.GetStringBuilder().ToString();
+            Directory.CreateDirectory(Path.GetDirectoryName(persistenceFile));
+            File.WriteAllText(persistenceFile, xmlResult);
         }
 
         private void PlayBtn_OnClick(object sender, RoutedEventArgs e)
