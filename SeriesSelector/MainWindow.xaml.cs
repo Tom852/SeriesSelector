@@ -23,76 +23,7 @@ namespace SeriesSelector
         public MainWindow()
         {
             InitializeComponent();
-            UpdateLabels();
         }
 
-        private void UpdateLabels()
-        {
-            LabelTop.Content = new Core().GetPrintableName(Series.TNG);
-            LabelBot.Content = new Core().GetPrintableName(Series.Men);
-        }
-
-        private void TopLaunch(object sender, RoutedEventArgs e)
-        {
-            new Core().PlayNext(Series.TNG);
-            UpdateLabels();
-        }
-
-        private void TopInc(object sender, RoutedEventArgs e)
-        {
-            new Core().Increase(Series.TNG);
-            UpdateLabels();
-
-        }
-        private void TopInc2(object sender, RoutedEventArgs e)
-        {
-            new Core().Increase(Series.TNG, 20);
-            UpdateLabels();
-        }
-
-        private void TopDec(object sender, RoutedEventArgs e)
-        {
-            new Core().Decrease(Series.TNG);
-            UpdateLabels();
-        }
-
-        private void TopDec2(object sender, RoutedEventArgs e)
-        {
-            new Core().Decrease(Series.TNG, 20);
-            UpdateLabels();
-        }
-
-        private void BotLaunch(object sender, RoutedEventArgs e)
-        {
-            new Core().PlayNext(Series.Men);
-            UpdateLabels();
-
-        }
-
-        private void BotInc(object sender, RoutedEventArgs e)
-        {
-            new Core().Increase(Series.Men);
-            UpdateLabels();
-
-        }
-        private void BotInc2(object sender, RoutedEventArgs e)
-        {
-            new Core().Increase(Series.Men, 20);
-            UpdateLabels();
-
-        }
-        private void BotDec(object sender, RoutedEventArgs e)
-        {
-            new Core().Decrease(Series.Men);
-            UpdateLabels();
-
-        }
-
-        private void BotDec2(object sender, RoutedEventArgs e)
-        {
-            new Core().Decrease(Series.Men, 20);
-            UpdateLabels();
-
-        }
     }
 }

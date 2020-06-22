@@ -55,10 +55,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Core.cs" />
-    <Compile Include="FileStuff.cs" />
-    <Compile Include="RegistryStuf.cs" />
-    <Compile Include="Series.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
