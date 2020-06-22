@@ -105,12 +105,6 @@ namespace SeriesSelector
             using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
             {
                 System.Windows.Forms.DialogResult result = dialog.ShowDialog();
-
-                if (result != System.Windows.Forms.DialogResult.OK)
-                {
-                    MessageBox.Show("No path was provided", "Alert", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
                 if (!Directory.GetFiles(dialog.SelectedPath).Any())
                 {
                     MessageBox.Show("This folder is empty", "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -132,14 +126,14 @@ namespace SeriesSelector
             int index = ListView.Items.IndexOf(item);
             string seriesToDelete = Model.SeriesList[index].SeriesNameAsString;
 
-            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show($"Delete {seriesToDelete} ?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
+            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show($"Are you sure to remove {seriesToDelete} ?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
             {
                 Model.SeriesList.RemoveAt(index);
             }
             else
             {
-                System.Windows.MessageBox.Show("Delete operation Terminated");
+                System.Windows.MessageBox.Show("Delete operation aborted");
             }
         }
     }

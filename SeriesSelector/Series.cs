@@ -120,8 +120,22 @@ namespace SeriesSelector
         public string GetFullFilePathOfCurrentEpisode()
         {
             var allFiles = GetFileList();
-            var targetFile = allFiles[CurrentIndex];
-            return targetFile;
+            try
+            {
+                return allFiles[CurrentIndex];
+            }
+            catch (IndexOutOfRangeException)
+            {
+                if (allFiles.Any())
+                {
+                    CurrentIndex = 0;
+                    return allFiles[CurrentIndex];
+                }
+                else
+                {
+                    return "Error - Folder Empty - Please Remove.";
+                }
+            }
         }
 
         public string GetFileNameOfCurrentEpisode()
@@ -133,8 +147,14 @@ namespace SeriesSelector
 
         public void Play()
         {
-            System.Diagnostics.Process.Start(GetFullFilePathOfCurrentEpisode());
-            Increase();
+            try
+            {
+                System.Diagnostics.Process.Start(GetFullFilePathOfCurrentEpisode());
+                Increase();
+            }
+            catch
+            {
+            }
         }
 
         public void Increase(int amount = 1)
