@@ -14,23 +14,11 @@ namespace SeriesSelector
 {
     public class Series : INotifyPropertyChanged
     {
-        private string _filesystemPath;
+
+
+        public string FilesystemPath { get; set; }
+
         private int _currentIndex;
-
-
-        public string FilesystemPath
-        {
-            get
-            {
-                return _filesystemPath;
-            }
-            set
-            {
-                _filesystemPath = value;
-                OnPropertyChanged(nameof(FilesystemPath));
-            }
-
-        }
 
         public int CurrentIndex
         {
@@ -42,6 +30,7 @@ namespace SeriesSelector
             {
                 _currentIndex = value;
                 OnPropertyChanged(nameof(CurrentIndex));
+                OnPropertyChanged(nameof(CurrentEpisodeAsString));
             }
         }
 
@@ -139,9 +128,22 @@ namespace SeriesSelector
         public void Play()
         {
             System.Diagnostics.Process.Start(GetFullFilePathOfCurrentEpisode());
-            if (CanIncrease())
+            Increase();
+        }
+
+        public void Increase(int amount = 1)
+        {
+            if (CanIncrease(amount))
             {
-                CurrentIndex++;
+                CurrentIndex += amount;
+            }
+        }
+
+        public void Decrease(int amount = 1)
+        {
+            if (CanDecrease(amount))
+            {
+                CurrentIndex -= amount;
             }
         }
 

@@ -9,6 +9,6 @@ namespace SeriesSelector
 {
     public class SeriesViewModel
     {
-        public ObservableCollection<Series> SeriesList { get; set; }
+        public ObservableCollection<Series> SeriesList { get; set; } = new ObservableCollection<Series>();
     }
 }
