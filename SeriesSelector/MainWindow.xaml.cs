@@ -96,5 +96,37 @@ namespace SeriesSelector
             int index = ListView.Items.IndexOf(item);
             return index;
         }
+
+        private void AddSeries(object sender, RoutedEventArgs e)
+        {
+            using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
+            {
+                System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+
+                if (result != System.Windows.Forms.DialogResult.OK)
+                {
+                    MessageBox.Show("No path was provided", "Alert", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                if (!Directory.GetFiles(dialog.SelectedPath).Any())
+                {
+                    MessageBox.Show("This folder is empty", "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                Model.SeriesList.Add(new Series(dialog.SelectedPath));
+            }
+        }
+
+        private void ListView_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Delete)
+            {
+                e.Handled = true;
+                return;
+            }
+            var item = (ListView.SelectedItem as FrameworkElement).DataContext;
+            int index = ListView.Items.IndexOf(item);
+        }
     }
 }

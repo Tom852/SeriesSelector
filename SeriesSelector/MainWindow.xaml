@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SeriesSelector"
         mc:Ignorable="d"
-        Title="SeriesPicker by Tom" Height="450" Width="1600" >
+        Title="SeriesPicker by Tom" Height="800" Width="1200" >
 
     <Window.Background>
         <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
@@ -17,8 +17,11 @@
     </Window.Background>
 
     <StackPanel Orientation="Vertical">
-        <Label Content="Select a Series to play" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="24 pt" Margin="0,0,0,20" FontWeight="Heavy"/>
-        <ListView Name="ListView"  ItemsSource="{Binding SeriesList}" HorizontalAlignment="Stretch" Background="Transparent" BorderBrush="Transparent">
+        <Grid>
+            <Label Content="Select a Series to play" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="24 pt" Margin="0,0,0,20" FontWeight="Heavy"/>
+            <Button Content="+" Click="AddSeries" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20" Width="30" Height="30" Background="Black" Foreground="White" />
+        </Grid>
+        <ListView Name="ListView"  ItemsSource="{Binding SeriesList}" HorizontalAlignment="Stretch" Background="Transparent" BorderBrush="Transparent" KeyDown="ListView_OnKeyDown">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
