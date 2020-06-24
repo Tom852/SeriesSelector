@@ -1,8 +1,7 @@
 # SeriesSelector
-Remembers what the last played episode of your series was and opens the succeeding one for you.
+A software that remembers what the last played episode of your series was and continuously opens the succeeding one for you.
 
 ![Screenshot](/DemoPics/01.png "Screenshot")
-
 
 ## About
 Do you know this problem?
@@ -23,16 +22,14 @@ The state will be rememebered, thus, the next day, you can directly continue to 
 ## Download
 [Series Selector](/Releases/SeriesSelector.exe)
 
-## Nice to know
-* If your episodes contain a season and episode index of the format SSxEE,
-e.g. 06x12,
-the filename prior to this will be cropped of,
-since I assume its just a repetition of the serie's name.
-
 ##  Usabilty Hints
 * To delete a series, mark it and press delete.
 * To navigate quickly thorugh a folder, right click the arrow button.
 * You can also use the software for other things like pictures or music.
+* If your episodes contain a season and episode index of the format SSxEE,
+e.g. 06x12,
+the filename prior to this will be cropped of,
+since I assume its just a repetition of the serie's name.
 
 ## Why is it so big??
 Well, because you are chillin on your sofa when using this tool.
