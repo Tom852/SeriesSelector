@@ -65,35 +65,35 @@ namespace SeriesSelector
 
         private void PlayBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            var index = ButtonClickToListIndex(sender);
+            var index = GetIndexOfElementThatWasClicked(sender);
             Model.SeriesList[index].Play();
         }
 
         private void IncBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            var index = ButtonClickToListIndex(sender);
+            var index = GetIndexOfElementThatWasClicked(sender);
             Model.SeriesList[index].Increase();
         }
 
         private void IncBtn_OnRightClick(object sender, RoutedEventArgs e)
         {
-            var index = ButtonClickToListIndex(sender);
+            var index = GetIndexOfElementThatWasClicked(sender);
             Model.SeriesList[index].Increase(20);
         }
 
         private void DecBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            var index = ButtonClickToListIndex(sender);
+            var index = GetIndexOfElementThatWasClicked(sender);
             Model.SeriesList[index].Decrease();
         }
 
         private void DecBtn_OnRightClick(object sender, RoutedEventArgs e)
         {
-            var index = ButtonClickToListIndex(sender);
+            var index = GetIndexOfElementThatWasClicked(sender);
             Model.SeriesList[index].Decrease(20);
         }
 
-        private int ButtonClickToListIndex(object sender)
+        private int GetIndexOfElementThatWasClicked(object sender)
         {
             var item = (sender as FrameworkElement).DataContext;
             int index = ListView.Items.IndexOf(item);
