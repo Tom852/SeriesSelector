@@ -33,6 +33,7 @@ namespace SeriesSelector
         {
 
             InitializeComponent();
+            ResetPosition();
 
             if (File.Exists(persistenceFile))
             {
@@ -50,7 +51,44 @@ namespace SeriesSelector
             DataContext = Model;
 
             Closing += (sender, args) => PersistData();
+            Closing += (sender, args) => StorePosition();
         }
+
+
+        private void StorePosition()
+        {
+            var reg = new RegistryStuf();
+            int height = (int)this.Height;
+            int width = (int)this.Width;
+            int xPos = (int) this.Left;
+            int yPos = (int) this.Top;
+            reg.Write("height", height);
+            reg.Write("width", width);
+            reg.Write("xPos", xPos);
+            reg.Write("yPos", yPos);
+        }
+
+
+        private void ResetPosition()
+        {
+            try
+            {
+                var reg = new RegistryStuf();
+                int h = reg.Read("height");
+                int w = reg.Read("width");
+                int x = reg.Read("xPos");
+                int y = reg.Read("yPos");
+                this.Height = h;
+                this.Width = w;
+                this.Left = x;
+                this.Top = y;
+            }
+            catch (NullReferenceException)
+            {
+                //using defaults
+            }
+        }
+
 
         private void PersistData()
         {

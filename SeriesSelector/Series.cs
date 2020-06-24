@@ -82,7 +82,6 @@ namespace SeriesSelector
                     char c2 = SeriesNameAsString.ToLower()[1];
                     char c3 = SeriesNameAsString.ToLower()[2];
 
-
                     Color c = Color.FromRgb(ScaledByteFromChar(c1), ScaledByteFromChar(c2), ScaledByteFromChar(c3));
                     SolidColorBrush brush = new SolidColorBrush(c);
                     return brush;
