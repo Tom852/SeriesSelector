@@ -28,78 +28,19 @@ namespace SeriesSelector
     public partial class MainWindow : Window
     {
         public SeriesViewModel Model { get; set; }
-        private readonly string persistenceFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TomsSeriesShit/SeriesPicker.data");
         public MainWindow()
         {
-
             InitializeComponent();
-            ResetPosition();
+            new PositionMaster(this).LoadPosition();
 
-            if (File.Exists(persistenceFile))
-            {
-                string xml = File.ReadAllText(persistenceFile);
-                TextReader tr = new StringReader(xml);
+            DataContext = new PersistenceMaster().Load();
 
-                var s = new XmlSerializer(typeof(SeriesViewModel));
-                var data = (SeriesViewModel) s.Deserialize(tr);
-                Model = data;
-            }
-            else
-            {
-                Model = new SeriesViewModel();
-            }
-            DataContext = Model;
-
-            Closing += (sender, args) => PersistData();
-            Closing += (sender, args) => StorePosition();
+            Closing += (sender, args) => new PersistenceMaster().Persist(Model);
+            Closing += (sender, args) => new PositionMaster(this).StorePosition();
         }
 
 
-        private void StorePosition()
-        {
-            var reg = new RegistryStuf();
-            int height = (int)this.Height;
-            int width = (int)this.Width;
-            int xPos = (int) this.Left;
-            int yPos = (int) this.Top;
-            reg.Write("height", height);
-            reg.Write("width", width);
-            reg.Write("xPos", xPos);
-            reg.Write("yPos", yPos);
-        }
-
-
-        private void ResetPosition()
-        {
-            try
-            {
-                var reg = new RegistryStuf();
-                int h = reg.Read("height");
-                int w = reg.Read("width");
-                int x = reg.Read("xPos");
-                int y = reg.Read("yPos");
-                this.Height = h;
-                this.Width = w;
-                this.Left = x;
-                this.Top = y;
-            }
-            catch (NullReferenceException)
-            {
-                //using defaults
-            }
-        }
-
-
-        private void PersistData()
-        {
-            var s = new XmlSerializer(typeof(SeriesViewModel));
-            StringBuilder sb = new StringBuilder();
-            StringWriter sw = new StringWriter(sb);
-            s.Serialize(sw, Model);
-            string xmlResult = sw.GetStringBuilder().ToString();
-            Directory.CreateDirectory(Path.GetDirectoryName(persistenceFile));
-            File.WriteAllText(persistenceFile, xmlResult);
-        }
+        
 
         private void PlayBtn_OnClick(object sender, RoutedEventArgs e)
         {

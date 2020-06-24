@@ -57,6 +57,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="PersistenceMaster.cs" />
+    <Compile Include="PositionMaster.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="RegistryStuf.cs" />
     <Compile Include="Series.cs" />
