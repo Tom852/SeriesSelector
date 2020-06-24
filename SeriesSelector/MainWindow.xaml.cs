@@ -27,16 +27,17 @@ namespace SeriesSelector
     /// </summary>
     public partial class MainWindow : Window
     {
-        public SeriesViewModel Model { get; set; }
+        public SeriesViewModel Model { get; set; } = new SeriesViewModel();
         public MainWindow()
         {
             InitializeComponent();
             new PositionMaster(this).LoadPosition();
 
-            Model = new PersistenceMaster().Load();
+            Model.SeriesList = new PersistenceMaster().Load();
+            Model.Time = "abcd";
             DataContext = Model;
 
-            Closing += (sender, args) => new PersistenceMaster().Persist(Model);
+            Closing += (sender, args) => new PersistenceMaster().Persist(Model.SeriesList);
             Closing += (sender, args) => new PositionMaster(this).StorePosition();
         }
 

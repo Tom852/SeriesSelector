@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,31 +13,38 @@ namespace SeriesSelector
     {
         private readonly string persistenceFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TomsSeriesShit/SeriesPicker.data");
 
-        public void Persist(SeriesViewModel model)
+        XmlSerializer s = new XmlSerializer(typeof(ObservableCollection<Series>));
+
+        public void Persist(ObservableCollection<Series> list)
         {
-            var s = new XmlSerializer(typeof(SeriesViewModel));
             StringBuilder sb = new StringBuilder();
             StringWriter sw = new StringWriter(sb);
-            s.Serialize(sw, model);
+            s.Serialize(sw, list);
             string xmlResult = sw.GetStringBuilder().ToString();
             Directory.CreateDirectory(Path.GetDirectoryName(persistenceFile));
             File.WriteAllText(persistenceFile, xmlResult);
         }
 
-        public SeriesViewModel Load()
+        public ObservableCollection<Series> Load()
         {
             if (File.Exists(persistenceFile))
             {
-                string xml = File.ReadAllText(persistenceFile);
-                TextReader tr = new StringReader(xml);
+                try
+                {
+                    string xml = File.ReadAllText(persistenceFile);
+                    TextReader tr = new StringReader(xml);
 
-                var s = new XmlSerializer(typeof(SeriesViewModel));
-                var data = (SeriesViewModel)s.Deserialize(tr);
-                return data;
+                    var data = (ObservableCollection<Series>) s.Deserialize(tr);
+                    return data;
+                }
+                catch
+                {
+                    return new ObservableCollection<Series>();
+                }
             }
             else
             {
-                return new SeriesViewModel();
+                return new ObservableCollection<Series>();
             }
         }
     }
