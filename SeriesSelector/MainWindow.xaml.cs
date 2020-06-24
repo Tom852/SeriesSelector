@@ -111,7 +111,7 @@ namespace SeriesSelector
             {
                 MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show(
                     $"Are you sure to remove {targetSeries} ?", "Delete Confirmation",
-                    System.Windows.MessageBoxButton.YesNo);
+                    System.Windows.MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
                     Model.SeriesList.RemoveAt(index);
@@ -131,6 +131,17 @@ namespace SeriesSelector
             ScrollViewer scv = (ScrollViewer)sender;
             scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
             e.Handled = true;
+        }
+
+        private void ShowHelp(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Right click the arrows to skip 20 episodes at once.\nTo remove a series, mark the text an press DEL.", "Hints", System.Windows.MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void Donate(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Feel free to donate with Paypal to thomaskistler (at) bluewin (dot) ch", "Donate", System.Windows.MessageBoxButton.OK, MessageBoxImage.Information);
+            System.Diagnostics.Process.Start("https://www.paypal.me/tomk453");
         }
     }
 }
