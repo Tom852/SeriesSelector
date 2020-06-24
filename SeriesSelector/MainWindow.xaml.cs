@@ -180,5 +180,12 @@ namespace SeriesSelector
                 System.Windows.MessageBox.Show("Delete operation aborted");
             }
         }
+
+        private void ScrollerinoHandler(object sender, MouseWheelEventArgs e)
+        {
+                ScrollViewer scv = (ScrollViewer)sender;
+                scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
+                e.Handled = true;
+        }
     }
 }
