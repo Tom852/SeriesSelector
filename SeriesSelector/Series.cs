@@ -75,7 +75,7 @@ namespace SeriesSelector
             return SeriesNameAsString;
         }
 
-        public Brush GetAColorBrush
+        public Brush GetBGColorBrush
         {
             get
             {
@@ -92,6 +92,31 @@ namespace SeriesSelector
                 catch (IndexOutOfRangeException)
                 {
                     return Brushes.DeepPink;
+                }
+            }
+        }
+
+        public Brush GetFGColorBrush
+        {
+            get
+            {
+                try
+                {
+                    char c1 = SeriesNameAsString.ToLower()[0];
+                    char c2 = SeriesNameAsString.ToLower()[1];
+                    char c3 = SeriesNameAsString.ToLower()[2];
+
+                    int brightness = ScaledByteFromChar(c1)+ ScaledByteFromChar(c2)+ ScaledByteFromChar(c3);
+
+                    if (brightness < 100)
+                    {
+                        return Brushes.White;
+                    }
+                    return Brushes.Black;
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    return Brushes.Black;
                 }
             }
         }

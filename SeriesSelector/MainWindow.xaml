@@ -32,7 +32,7 @@
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
                             <Button Name="DecBtn" Content="&lt;" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0" Width="20"  Click="DecBtn_OnClick" MouseRightButtonDown="DecBtn_OnRightClick"/>
-                            <Button Name="PlayBtn" Content="{Binding SeriesNameAsString}" VerticalAlignment="Center" Width="150" Height="75" Margin="10,10" FontWeight="Bold" FontSize="16pt" Background="{Binding GetAColorBrush}" Click="PlayBtn_OnClick"/>
+                            <Button Name="PlayBtn" Content="{Binding SeriesNameAsString}" VerticalAlignment="Center" Width="150" Height="75" Margin="10,10" FontWeight="Bold" FontSize="16pt" Background="{Binding GetBGColorBrush}" Foreground="{Binding GetFGColorBrush}" Click="PlayBtn_OnClick"/>
                             <Button Name="IncBtn" Content="&gt;" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0" Width="20"  Click="IncBtn_OnClick" MouseRightButtonDown="IncBtn_OnRightClick"/>
                             <Label Name = "Label" Content="{Binding CurrentEpisodeAsString}" VerticalAlignment="Center" Margin="10,0" FontSize="28pt"/>
                         </StackPanel>
