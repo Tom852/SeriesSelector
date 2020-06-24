@@ -10,8 +10,10 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -28,17 +30,22 @@ namespace SeriesSelector
     public partial class MainWindow : Window
     {
         public SeriesViewModel Model { get; set; } = new SeriesViewModel();
+        public readonly Clock c = new Clock();
+
         public MainWindow()
         {
             InitializeComponent();
             new PositionMaster(this).LoadPosition();
 
             Model.SeriesList = new PersistenceMaster().Load();
-            Model.Time = "abcd";
+
+            Model.Time = c.GetTime();
+            c.OnTimechange += (o, s) => Model.Time = s;
+
             DataContext = Model;
 
-            Closing += (sender, args) => new PersistenceMaster().Persist(Model.SeriesList);
-            Closing += (sender, args) => new PositionMaster(this).StorePosition();
+            Closing += (o, a) => new PersistenceMaster().Persist(Model.SeriesList);
+            Closing += (o, a) => new PositionMaster(this).StorePosition();
         }
 
 
