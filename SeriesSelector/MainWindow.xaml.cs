@@ -33,7 +33,8 @@ namespace SeriesSelector
             InitializeComponent();
             new PositionMaster(this).LoadPosition();
 
-            DataContext = new PersistenceMaster().Load();
+            Model = new PersistenceMaster().Load();
+            DataContext = Model;
 
             Closing += (sender, args) => new PersistenceMaster().Persist(Model);
             Closing += (sender, args) => new PositionMaster(this).StorePosition();
