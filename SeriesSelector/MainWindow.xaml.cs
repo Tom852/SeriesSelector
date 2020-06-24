@@ -117,10 +117,6 @@ namespace SeriesSelector
             {
                 Model.SeriesList.RemoveAt(index);
             }
-            else
-            {
-                System.Windows.MessageBox.Show("Delete operation aborted");
-            }
         }
 
         private void ScrollerinoHandler(object sender, MouseWheelEventArgs e)
