@@ -104,7 +104,13 @@ namespace SeriesSelector
         {
             using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
             {
+                dialog.Description = "Select the folder with your series";
+                dialog.ShowNewFolderButton = false;
                 System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+                if (result != System.Windows.Forms.DialogResult.OK)
+                {
+                    return;
+                }
                 if (!Directory.GetFiles(dialog.SelectedPath).Any())
                 {
                     MessageBox.Show("This folder is empty", "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
