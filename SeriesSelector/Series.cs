@@ -16,8 +16,6 @@ namespace SeriesSelector
     [Serializable]
     public class Series : INotifyPropertyChanged
     {
-
-
         public string FilesystemPath { get; set; }
 
         private int _currentIndex;
@@ -70,6 +68,11 @@ namespace SeriesSelector
                 LinkedList<string> makeMyLifeEasy = new LinkedList<string>(splitted);
                 return makeMyLifeEasy.Last.Value;
             }
+        }
+
+        public override string ToString()
+        {
+            return SeriesNameAsString;
         }
 
         public Brush GetAColorBrush

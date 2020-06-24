@@ -41,7 +41,7 @@ namespace SeriesSelector
         }
 
 
-        
+
 
         private void PlayBtn_OnClick(object sender, RoutedEventArgs e)
         {
@@ -103,27 +103,34 @@ namespace SeriesSelector
 
         private void ListView_OnKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key != Key.Delete)
-            {
-                e.Handled = true;
-                return;
-            }
             var item = ListView.SelectedItem;
             int index = ListView.Items.IndexOf(item);
-            string seriesToDelete = Model.SeriesList[index].SeriesNameAsString;
+            Series targetSeries = Model.SeriesList[index];
 
-            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show($"Are you sure to remove {seriesToDelete} ?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
-            if (messageBoxResult == MessageBoxResult.Yes)
+            if (e.Key == Key.Delete)
             {
-                Model.SeriesList.RemoveAt(index);
+                MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show(
+                    $"Are you sure to remove {targetSeries} ?", "Delete Confirmation",
+                    System.Windows.MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                {
+                    Model.SeriesList.RemoveAt(index);
+                }
             }
+
+            if (e.Key == Key.Enter)
+            {
+                targetSeries.Play();
+            }
+
+            e.Handled = true;
         }
 
         private void ScrollerinoHandler(object sender, MouseWheelEventArgs e)
         {
-                ScrollViewer scv = (ScrollViewer)sender;
-                scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
-                e.Handled = true;
+            ScrollViewer scv = (ScrollViewer)sender;
+            scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
+            e.Handled = true;
         }
     }
 }
