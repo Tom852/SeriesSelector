@@ -115,7 +115,7 @@ namespace SeriesSelector
                 {
                     var cs = GetColors();
 
-                    int brightness = cs[0] + cs[1] + cs[2];
+                    int brightness = cs[0] + cs[1] + cs[2];  //remember: byte + byte = int
 
                     if (brightness < 100)
                     {

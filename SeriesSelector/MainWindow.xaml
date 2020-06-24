@@ -10,8 +10,8 @@
     <Window.Background>
         <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
             <LinearGradientBrush.GradientStops>
-                <GradientStop Color="White" Offset="0"/>
-                <GradientStop Color="LightBlue" Offset="1"/>
+                <GradientStop Color="Black" Offset="0"/>
+                <GradientStop Color="#151030" Offset="1"/>
             </LinearGradientBrush.GradientStops>
         </LinearGradientBrush>
     </Window.Background>
@@ -19,11 +19,11 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto" PreviewMouseWheel="ScrollerinoHandler">
         <StackPanel Orientation="Vertical">
             <DockPanel>
-                <Label Content="Select a Series to play" DockPanel.Dock="Left" VerticalAlignment="Center" FontSize="24 pt" Margin="10" FontWeight="Heavy"/>
-                <Button Content="+" Click="AddSeries" DockPanel.Dock="Right" VerticalContentAlignment="Center" Margin="10 20 20 20" Width="30" Height="30" Background="Black" Foreground="White" />
-                <Button Content="?" Click="ShowHelp" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="10 20" Width="30" Height="30" Background="Black" Foreground="White" />
-                <Button Content="$" Click="Donate" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="10 20" Width="30" Height="30" Background="Black" Foreground="White" />
-                <Label Content="{Binding Time}" DockPanel.Dock="Right" VerticalAlignment="Center" FontSize="24 pt" Margin="0 0 10 5" FontWeight="ExtraBold"/>
+                <Label Content="Select a Series to play" DockPanel.Dock="Left" VerticalAlignment="Center" FontSize="24 pt" Margin="10" FontWeight="Heavy" Foreground="AliceBlue"/>
+                <Button Content="+" Click="AddSeries" DockPanel.Dock="Right" VerticalContentAlignment="Center" Margin="10 20 20 20" Width="30" Height="30" Background="Black" Foreground="AliceBlue" />
+                <Button Content="?" Click="ShowHelp" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="10 20" Width="30" Height="30" Background="Black" Foreground="AliceBlue" />
+                <Button Content="$" Click="Donate" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="10 20" Width="30" Height="30" Background="Black" Foreground="AliceBlue" />
+                <Label Content="{Binding Time}" DockPanel.Dock="Right" VerticalAlignment="Center" FontSize="24 pt" Margin="0 0 10 5" FontWeight="ExtraBold" Foreground="AliceBlue"/>
 <Label></Label>
             </DockPanel>
             <ListView Name="ListView"  ItemsSource="{Binding SeriesList}" HorizontalAlignment="Stretch" Background="Transparent" BorderBrush="Transparent" KeyDown="ListView_OnKeyDown"
@@ -34,7 +34,7 @@
                             <Button Name="DecBtn" Content="&lt;" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0" Width="20"  Click="DecBtn_OnClick" MouseRightButtonDown="DecBtn_OnRightClick"/>
                             <Button Name="PlayBtn" Content="{Binding SeriesNameAsString}" VerticalAlignment="Center" Width="150" Height="75" Margin="10,10" FontWeight="Bold" FontSize="16pt" Background="{Binding GetBGColorBrush}" Foreground="{Binding GetFGColorBrush}" Click="PlayBtn_OnClick"/>
                             <Button Name="IncBtn" Content="&gt;" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0" Width="20"  Click="IncBtn_OnClick" MouseRightButtonDown="IncBtn_OnRightClick"/>
-                            <Label Name = "Label" Content="{Binding CurrentEpisodeAsString}" VerticalAlignment="Center" Margin="10,0" FontSize="28pt"/>
+                            <Label Name = "Label" Content="{Binding CurrentEpisodeAsString}" VerticalAlignment="Center" Margin="10,0" FontSize="28pt" Foreground="AliceBlue"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
