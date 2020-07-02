@@ -17,10 +17,8 @@ namespace SeriesSelector
             char c2 = list[1];
             char c3 = list[0];
 
-            return new byte[]
-            {
-                ScaledByteFromChar(c1) , ScaledByteFromChar(c2) , ScaledByteFromChar(c3)
-            };
+            var arry = new char[] {c1, c2, c3};
+            return arry.Select(ScaledByteFromChar).ToArray();
         }
 
         private static byte ScaledByteFromChar(char x)
