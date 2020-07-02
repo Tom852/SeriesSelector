@@ -176,8 +176,14 @@ namespace SeriesSelector
 
         public void Play()
         {
-            System.Diagnostics.Process.Start(GetFullFilePathOfCurrentEpisode());
-            Increase();
+            try
+            {
+                System.Diagnostics.Process.Start(GetFullFilePathOfCurrentEpisode());
+                Increase();
+            }
+            catch
+            {
+            }
         }
 
         public void Increase(int amount = 1)
