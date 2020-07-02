@@ -37,7 +37,6 @@ namespace SeriesSelector
             return int.Parse(r.ToString());
         }
 
-
         ~RegistryStuf()
         {
             key?.Dispose();

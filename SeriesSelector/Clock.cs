@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Threading;
 
 namespace SeriesSelector
@@ -10,9 +6,9 @@ namespace SeriesSelector
     public class Clock
     {
         public event EventHandler<string> OnTimechange;
+
         private readonly DispatcherTimer timer = new DispatcherTimer();
         public string Time { get; private set; }
-
 
         public Clock()
         {
@@ -26,6 +22,7 @@ namespace SeriesSelector
             };
             timer.Start();
         }
+
         public string GetTime()
         {
             DateTime now = DateTime.Now;
@@ -43,7 +40,6 @@ namespace SeriesSelector
             string newTime = GetTime();
             return oldTime != newTime;
         }
-
 
         ~Clock()
         {

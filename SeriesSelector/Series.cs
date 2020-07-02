@@ -1,18 +1,15 @@
-﻿using System;
+﻿using SeriesSelector.Annotations;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Media;
-using SeriesSelector.Annotations;
 
 namespace SeriesSelector
 {
-
     [Serializable]
     public class Series : INotifyPropertyChanged
     {
@@ -83,7 +80,6 @@ namespace SeriesSelector
 
             return new byte[]
             {
-
                 ScaledByteFromChar(c1) , ScaledByteFromChar(c2) , ScaledByteFromChar(c3)
             };
         }
@@ -138,8 +134,6 @@ namespace SeriesSelector
             return (byte)rangedFrom5To255; //if over / underflow happens cause of spaces or numbers etc it does not matter, is just to get a color per series name.
         }
 
-
-
         public Series(string filepath)
         {
             FilesystemPath = filepath;
@@ -149,7 +143,6 @@ namespace SeriesSelector
         public Series()
         {
         }
-
 
         public string[] GetFileList() => Directory.GetFiles(FilesystemPath);
 
@@ -220,5 +213,4 @@ namespace SeriesSelector
             return CurrentIndex - amount >= 0;
         }
     }
-
 }

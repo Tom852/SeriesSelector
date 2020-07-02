@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace SeriesSelector
@@ -13,7 +10,7 @@ namespace SeriesSelector
     {
         private readonly string persistenceFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TomsSeriesSelector/SeriesPicker.data");
 
-        XmlSerializer s = new XmlSerializer(typeof(ObservableCollection<Series>));
+        private XmlSerializer s = new XmlSerializer(typeof(ObservableCollection<Series>));
 
         public void Persist(ObservableCollection<Series> list)
         {
@@ -34,7 +31,7 @@ namespace SeriesSelector
                     string xml = File.ReadAllText(persistenceFile);
                     TextReader tr = new StringReader(xml);
 
-                    var data = (ObservableCollection<Series>) s.Deserialize(tr);
+                    var data = (ObservableCollection<Series>)s.Deserialize(tr);
                     return data;
                 }
                 catch
