@@ -66,6 +66,7 @@
     <Compile Include="RegistryStuf.cs" />
     <Compile Include="Series.cs" />
     <Compile Include="SeriesViewModel.cs" />
+    <Compile Include="TrulyObservableCollection.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

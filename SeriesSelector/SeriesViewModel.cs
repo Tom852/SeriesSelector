@@ -5,7 +5,7 @@ namespace SeriesSelector
 {
     public class SeriesViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<Series> SeriesList { get; set; } = new ObservableCollection<Series>();
+        public TrulyObservableCollection<Series> SeriesList { get; set; } = new TrulyObservableCollection<Series>();
 
         private string _time;
 

@@ -10,9 +10,9 @@ namespace SeriesSelector
     {
         private readonly string persistenceFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TomsSeriesSelector/SeriesPickerData.xml");
 
-        private XmlSerializer s = new XmlSerializer(typeof(ObservableCollection<Series>));
+        private XmlSerializer s = new XmlSerializer(typeof(TrulyObservableCollection<Series>));
 
-        public void Persist(ObservableCollection<Series> list)
+        public void Persist(TrulyObservableCollection<Series> list)
         {
             StringBuilder sb = new StringBuilder();
             StringWriter sw = new StringWriter(sb);
@@ -22,7 +22,7 @@ namespace SeriesSelector
             File.WriteAllText(persistenceFile, xmlResult);
         }
 
-        public ObservableCollection<Series> Load()
+        public TrulyObservableCollection<Series> Load()
         {
             if (File.Exists(persistenceFile))
             {
@@ -31,17 +31,17 @@ namespace SeriesSelector
                     string xml = File.ReadAllText(persistenceFile);
                     TextReader tr = new StringReader(xml);
 
-                    var data = (ObservableCollection<Series>)s.Deserialize(tr);
+                    var data = (TrulyObservableCollection<Series>)s.Deserialize(tr);
                     return data;
                 }
                 catch
                 {
-                    return new ObservableCollection<Series>();
+                    return new TrulyObservableCollection<Series>();
                 }
             }
             else
             {
-                return new ObservableCollection<Series>();
+                return new TrulyObservableCollection<Series>();
             }
         }
     }

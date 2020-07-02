@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,11 +32,19 @@ namespace SeriesSelector
 
             DataContext = Model;
 
-            Closing += (o, a) => new PersistenceMaster().Persist(Model.SeriesList);
+            Model.SeriesList.CollectionChanged += StoreData;
+
+            Closing += StoreData;
             Closing += (o, a) => new PositionMaster(this).StorePosition();
 
             Application.Current.DispatcherUnhandledException += HandleException;
         }
+
+        private void StoreData(object sender, EventArgs e)
+        {
+            new PersistenceMaster().Persist(Model.SeriesList);
+        }
+
 
         private void HandleException(object s, DispatcherUnhandledExceptionEventArgs a)
         {
