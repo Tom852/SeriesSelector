@@ -8,7 +8,7 @@ namespace SeriesSelector
 {
     public class PersistenceMaster
     {
-        private readonly string persistenceFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TomsSeriesSelector/SeriesPicker.data");
+        private readonly string persistenceFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TomsSeriesSelector/SeriesPickerData.xml");
 
         private XmlSerializer s = new XmlSerializer(typeof(ObservableCollection<Series>));
 
