@@ -120,13 +120,7 @@ namespace SeriesSelector
 
             if (e.Key == Key.Delete)
             {
-                MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show(
-                    $"Are you sure to remove {targetSeries} ?", "Delete Confirmation",
-                    System.Windows.MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (messageBoxResult == MessageBoxResult.Yes)
-                {
-                    Model.SeriesList.RemoveAt(index);
-                }
+                RemoveSeries(targetSeries, index);
             }
 
             if (e.Key == Key.Enter)
@@ -137,6 +131,36 @@ namespace SeriesSelector
             e.Handled = true;
         }
 
+        private void RemoveHandler(object sender, RoutedEventArgs e)
+        {
+            var index = GetIndexOfElementThatWasClicked(sender);
+            Series s = Model.SeriesList[index];
+            RemoveSeries(s, index);
+        }
+
+
+
+
+        private void RemoveSeries(Series targetSeries, int index)
+        {
+            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show(
+                $"Are you sure to remove {targetSeries} ?", "Remove Confirmation",
+                System.Windows.MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                Model.SeriesList.RemoveAt(index);
+            }
+        }
+
+
+        private void FindHandler(object sender, RoutedEventArgs e)
+        {
+            var index = GetIndexOfElementThatWasClicked(sender);
+            Series s = Model.SeriesList[index];
+            var path = s.GetFullFilePathOfCurrentEpisode();
+            string argument = $"/e, /select, \"{path}\"";
+            System.Diagnostics.Process.Start("explorer.exe", argument);
+        }
         private void ScrollerinoHandler(object sender, MouseWheelEventArgs e)
         {
             ScrollViewer scv = (ScrollViewer)sender;
