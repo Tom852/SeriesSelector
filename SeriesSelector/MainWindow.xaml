@@ -7,6 +7,10 @@
         mc:Ignorable="d"
         Title="SeriesSelector by Tom" Height="800" Width="1200">
 
+    <Window.Resources>
+        <ResourceDictionary Source="Resources.xaml" />
+    </Window.Resources>
+
     <Window.Background>
         <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
             <LinearGradientBrush.GradientStops>
@@ -20,9 +24,9 @@
         <StackPanel Orientation="Vertical">
             <DockPanel LastChildFill="True">
                 <Label Content="Select a Series to play" DockPanel.Dock="Left" VerticalAlignment="Center" FontSize="24 pt" Margin="10" FontWeight="Heavy" Foreground="AliceBlue" />
-                <Button Content="+" Click="AddSeries" DockPanel.Dock="Right" VerticalContentAlignment="Center" Margin="10 20 20 20" Width="30" Height="30" Background="Black" Foreground="AliceBlue" />
-                <Button Content="?" Click="ShowHelp" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="10 20" Width="30" Height="30" Background="Black" Foreground="AliceBlue" />
-                <Button Content="$" Click="Donate" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="10 20" Width="30" Height="30" Background="Black" Foreground="AliceBlue" />
+                <Button Content="+" Style="{StaticResource TopLayerButton}" Click="AddSeries" DockPanel.Dock="Right" Margin="10 20 15 20"/>
+                <Button Content="?" Style="{StaticResource TopLayerButton}" Click="ShowHelp" DockPanel.Dock="Right"  />
+                <Button Content="$" Style="{StaticResource TopLayerButton}" Click="Donate" DockPanel.Dock="Right" />
                 <Label Content="{Binding Time}" DockPanel.Dock="Right" VerticalAlignment="Center" FontSize="24 pt" Margin="0 0 10 5" FontWeight="ExtraBold" Foreground="AliceBlue" />
                 <Label></Label>
             </DockPanel>
@@ -32,14 +36,14 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                             <DockPanel HorizontalAlignment="Stretch" LastChildFill="True">
-                            <Button DockPanel.Dock="Left" Name="DecBtn" Content="&lt;" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0" Width="20"  Click="DecBtn_OnClick" MouseRightButtonDown="DecBtn_OnRightClick" />
+                            <Button DockPanel.Dock="Left" Style="{StaticResource SmallButton}" Name="DecBtn" Content="&lt;" Click="DecBtn_OnClick" MouseRightButtonDown="DecBtn_OnRightClick" />
                             <Button DockPanel.Dock="Left" Name="PlayBtn" VerticalAlignment="Center" Width="150" Height="65" Margin="10,10" FontWeight="Bold" FontSize="16pt" Background="{Binding GetBGColorBrush}" Foreground="{Binding GetFGColorBrush}" Click="PlayBtn_OnClick">
                                 <TextBlock TextWrapping="Wrap" TextAlignment="Center" Text="{Binding SeriesNameAsString}"/>
                             </Button>
-                            <Button DockPanel.Dock="Left" Name="IncBtn" Content="&gt;" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0" Width="20"  Click="IncBtn_OnClick" MouseRightButtonDown="IncBtn_OnRightClick" />
-                            <Button DockPanel.Dock="Right" Name="DeleteBtn" Content="X" Background="Black" Foreground="AliceBlue" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0" Width="20"  Click="RemoveHandler"/>
-                            <Button DockPanel.Dock="Right" Name="FindBtn" Content="E" Background="Black" Foreground="AliceBlue" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Width="20"  Click="FindHandler" />
-                            <Label  DockPanel.Dock="Left"   Name="Label" Content="{Binding CurrentEpisodeAsString}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="10,0" FontSize="28pt" Foreground="AliceBlue" />
+                            <Button DockPanel.Dock="Left" Style="{StaticResource SmallButton}" Name="IncBtn" Content="&gt;" Click="IncBtn_OnClick" MouseRightButtonDown="IncBtn_OnRightClick" />
+                            <Button DockPanel.Dock="Right" Style="{StaticResource SmallButton}" Name="DeleteBtn" Content="X" Click="RemoveHandler" Margin="5 10 10 10"/>
+                            <Button DockPanel.Dock="Right" Style="{StaticResource SmallButton}" Name="FindBtn" Content="E"  Click="FindHandler" />
+                            <Label  DockPanel.Dock="Left"  Name="Label" Content="{Binding CurrentEpisodeAsString}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="10,0" FontSize="28pt" Foreground="AliceBlue" />
                         </DockPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
