@@ -144,26 +144,33 @@ namespace SeriesSelector
         {
         }
 
-        public string[] GetFileList() => Directory.GetFiles(FilesystemPath);
+        public string[] GetFileList()
+        {
+            return Directory.GetFiles(FilesystemPath);
+        }
 
         public string GetFullFilePathOfCurrentEpisode()
         {
-            var allFiles = GetFileList();
             try
             {
+                var allFiles = GetFileList();
                 return allFiles[CurrentIndex];
             }
             catch (IndexOutOfRangeException)
             {
-                if (allFiles.Any())
+                if (GetFileList().Any())
                 {
                     CurrentIndex = 0;
-                    return allFiles[CurrentIndex];
+                    return GetFileList()[CurrentIndex];
                 }
                 else
                 {
-                    return "Error - Folder Empty - Please Remove.";
+                    return "Error - Folder Empty - Please Remove";
                 }
+            }
+            catch (DirectoryNotFoundException)
+            {
+                return "Error - Folder not Found - Please Remove";
             }
         }
 
@@ -181,8 +188,9 @@ namespace SeriesSelector
                 System.Diagnostics.Process.Start(GetFullFilePathOfCurrentEpisode());
                 Increase();
             }
-            catch
+            catch (FileNotFoundException)
             {
+                //Just do nothing and ignore the request
             }
         }
 
