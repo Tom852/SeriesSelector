@@ -11,10 +11,11 @@ namespace SeriesSelector
 
         public static byte[] ToRGB(this string name)
         {
-            var list = name.ToLower().Reverse().ToList();
+            var list = name.ToLower().ToList();
             char c1 = list[0];
+            list.Reverse();
             char c2 = list[1];
-            char c3 = list[2];
+            char c3 = list[0];
 
             return new byte[]
             {
