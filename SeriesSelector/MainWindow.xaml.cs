@@ -39,7 +39,7 @@ namespace SeriesSelector
 
             Model.SeriesList = new PersistenceMaster().Load();
 
-            Model.Time = c.GetTime();
+            Model.Time = c.Time;
             c.OnTimechange += (o, s) => Model.Time = s;
 
             DataContext = Model;

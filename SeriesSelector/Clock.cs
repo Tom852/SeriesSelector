@@ -11,12 +11,19 @@ namespace SeriesSelector
     {
         public event EventHandler<string> OnTimechange;
         private readonly DispatcherTimer timer = new DispatcherTimer();
+        public string Time { get; private set; }
 
 
         public Clock()
         {
-            timer.Interval = new TimeSpan(0, 0, 10);
-            timer.Tick += (sender, args) => OnTimechange?.Invoke(this, GetTime());
+            RefreshTime();
+            timer.Interval = new TimeSpan(0, 0, 5);
+            timer.Tick += (sender, args) =>
+            {
+                if (!TimeHasChanged()) return;
+                RefreshTime();
+                OnTimechange?.Invoke(this, Time);
+            };
             timer.Start();
         }
         public string GetTime()
@@ -24,6 +31,19 @@ namespace SeriesSelector
             DateTime now = DateTime.Now;
             return now.ToString("HH:mm");
         }
+
+        private void RefreshTime()
+        {
+            Time = GetTime();
+        }
+
+        private bool TimeHasChanged()
+        {
+            string oldTime = Time;
+            string newTime = GetTime();
+            return oldTime != newTime;
+        }
+
 
         ~Clock()
         {
