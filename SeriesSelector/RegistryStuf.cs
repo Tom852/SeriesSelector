@@ -5,7 +5,7 @@ namespace SeriesSelector
 {
     public class RegistryStuf
     {
-        public const string idKey = @"SOFTWARE\TomsSeriesShit";
+        public const string idKey = @"SOFTWARE\TomsSeriesSelector";
         public const string keyWidth = "width";
         public const string keyHeight = "height";
         public const string keyXPos = "xPos";
