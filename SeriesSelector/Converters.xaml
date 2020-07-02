@@ -4,6 +4,8 @@
 
 
     <local:ProgressToVisibilityConverter x:Key="MyProgressToVisibilityConverter" />
+    <local:StringToBrushConverterBG x:Key="PlayBtnBG" />
+    <local:StringToBrushConverterFG x:Key="PlayBtnFG" />
 
 
 </ResourceDictionary>

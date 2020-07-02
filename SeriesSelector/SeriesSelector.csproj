@@ -63,9 +63,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Clock.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="PersistenceMaster.cs" />
     <Compile Include="PositionMaster.cs" />
     <Compile Include="ProgressBarHandler.cs" />
+    <Compile Include="StringToBrushConverterBG.cs" />
+    <Compile Include="StringToBrushConverterFG.cs" />
     <Compile Include="ProgressToVisibilityConverter.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="RegistryStuf.cs" />

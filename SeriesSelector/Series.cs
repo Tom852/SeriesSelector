@@ -72,67 +72,7 @@ namespace SeriesSelector
             return SeriesNameAsString;
         }
 
-        private byte[] GetColors()
-        {
-            char c1 = SeriesNameAsString.ToLower()[0];
-            char c2 = SeriesNameAsString.ToLower()[1];
-            char c3 = SeriesNameAsString.ToLower()[2];
 
-            return new byte[]
-            {
-                ScaledByteFromChar(c1) , ScaledByteFromChar(c2) , ScaledByteFromChar(c3)
-            };
-        }
-
-        public Brush GetBGColorBrush
-        {
-            get
-            {
-                try
-                {
-                    var cs = GetColors();
-
-                    Color c = Color.FromRgb(cs[0], cs[1], cs[2]);
-                    SolidColorBrush brush = new SolidColorBrush(c);
-                    return brush;
-                }
-                catch (IndexOutOfRangeException)
-                {
-                    return Brushes.DeepPink;
-                }
-            }
-        }
-
-        public Brush GetFGColorBrush
-        {
-            get
-            {
-                try
-                {
-                    var cs = GetColors();
-
-                    int brightness = cs[0] + cs[1] + cs[2];  //remember: byte + byte = int
-
-                    if (brightness < 100)
-                    {
-                        return Brushes.White;
-                    }
-                    return Brushes.Black;
-                }
-                catch (IndexOutOfRangeException)
-                {
-                    return Brushes.Black;
-                }
-            }
-        }
-
-        private byte ScaledByteFromChar(char x)
-        {
-            int startFrom0 = x - 'a';
-            int rangedFrom0To250 = startFrom0 * 10;
-            int rangedFrom5To255 = 5 + rangedFrom0To250;
-            return (byte)rangedFrom5To255; //if over / underflow happens cause of spaces or numbers etc it does not matter, is just to get a color per series name.
-        }
 
         public Series(string filepath)
         {
