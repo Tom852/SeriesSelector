@@ -120,9 +120,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Icon2.ico" />
   </ItemGroup>
   <ItemGroup>
