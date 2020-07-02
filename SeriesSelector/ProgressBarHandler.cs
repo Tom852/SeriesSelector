@@ -48,6 +48,7 @@ namespace SeriesSelector
         public void Stop()
         {
             T.Stop();
+            T.Tick -= OnTick;
             IsDone?.Invoke(this, null);
         }
     }

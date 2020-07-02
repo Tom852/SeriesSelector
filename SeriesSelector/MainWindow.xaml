@@ -34,7 +34,15 @@
                 <Button Content="?" Style="{StaticResource TopLayerButton}" Click="ShowHelp" DockPanel.Dock="Right"  />
                 <Button Content="$" Style="{StaticResource TopLayerButton}" Click="Donate" DockPanel.Dock="Right" />
                 <Label Content="{Binding Time}" DockPanel.Dock="Right" VerticalAlignment="Center" FontSize="24 pt" Margin="0 0 10 5" FontWeight="ExtraBold" Foreground="AliceBlue" />
-                <ProgressBar Name="PB" Minimum="0" Maximum="100" Value="{Binding Progress}" Visibility="{Binding Progress, Converter={StaticResource MyProgressToVisibilityConverter}}"  Margin="30" Foreground="MidnightBlue"></ProgressBar>
+                <ProgressBar Name="PB" Minimum="0" Maximum="100" Value="{Binding Progress}" Visibility="{Binding Progress, Converter={StaticResource MyProgressToVisibilityConverter}}"  Margin="30" Foreground="MidnightBlue">
+                    <ProgressBar.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="LightBlue" Offset="0" />
+                            <GradientStop Color="MidnightBlue" Offset="1" />
+                        </LinearGradientBrush>
+                    </ProgressBar.Background>
+
+                </ProgressBar>
             </DockPanel>
 
             <ListView Name="ListView" ItemsSource="{Binding SeriesList}" HorizontalContentAlignment="Stretch" Background="Transparent" BorderBrush="Transparent" KeyDown="ListView_OnKeyDown"

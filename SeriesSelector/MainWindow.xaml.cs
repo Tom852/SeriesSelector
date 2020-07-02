@@ -60,9 +60,15 @@ namespace SeriesSelector
         {
             var index = GetIndexOfElementThatWasClicked(sender);
             Series s = Model.SeriesList[index];
+            Play(s);
+        }
+
+        private void Play(Series s)
+        {
             InitializeProgressBar(s);
             s.Play();
         }
+    
 
         private void InitializeProgressBar(Series series)
         {
@@ -73,10 +79,9 @@ namespace SeriesSelector
                 engine.GetMetadata(inputFile);
             }
 
-            var duration = inputFile.Metadata.Duration;
-            double totalDuration = duration.TotalSeconds;
+            var duration = inputFile.Metadata.Duration.TotalSeconds;
 
-            pbh.Run(totalDuration);
+            pbh.Run(duration);
             pbh.PercentageChanged += (s, p) => Model.Progress = p;
         }
 
@@ -145,7 +150,7 @@ namespace SeriesSelector
 
             if (e.Key == Key.Enter)
             {
-                targetSeries.Play();
+                Play(targetSeries);
             }
 
             e.Handled = true;
