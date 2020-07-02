@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,7 +18,9 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using System.Xml.Serialization;
+using Application = System.Windows.Application;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MessageBox = System.Windows.MessageBox;
 using Path = System.IO.Path;
@@ -46,9 +49,17 @@ namespace SeriesSelector
 
             Closing += (o, a) => new PersistenceMaster().Persist(Model.SeriesList);
             Closing += (o, a) => new PositionMaster(this).StorePosition();
+
+            Application.Current.DispatcherUnhandledException += HandleException;
         }
 
-
+        private void HandleException(object s, DispatcherUnhandledExceptionEventArgs a)
+        {
+            string who = s.ToString();
+            string why = a.Exception.Message;
+            MessageBox.Show($"{who} caused an error:\n{why}", "An Ooopsie happened", MessageBoxButton.OK, MessageBoxImage.Error);
+            a.Handled = true;
+        }
 
 
         private void PlayBtn_OnClick(object sender, RoutedEventArgs e)
