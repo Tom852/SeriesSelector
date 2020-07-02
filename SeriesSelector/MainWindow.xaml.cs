@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Threading;
+using MediaToolkit;
 using Application = System.Windows.Application;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MessageBox = System.Windows.MessageBox;
@@ -19,6 +20,7 @@ namespace SeriesSelector
     {
         public SeriesViewModel Model { get; set; } = new SeriesViewModel();
         public readonly Clock c = new Clock();
+        public ProgressBarHandler pbh = new ProgressBarHandler();
 
         public MainWindow()
         {
@@ -57,7 +59,25 @@ namespace SeriesSelector
         private void PlayBtn_OnClick(object sender, RoutedEventArgs e)
         {
             var index = GetIndexOfElementThatWasClicked(sender);
-            Model.SeriesList[index].Play();
+            Series s = Model.SeriesList[index];
+            InitializeProgressBar(s);
+            s.Play();
+        }
+
+        private void InitializeProgressBar(Series series)
+        {
+            pbh?.Stop();
+            var inputFile = new MediaToolkit.Model.MediaFile { Filename = series.GetFullFilePathOfCurrentEpisode() };
+            using (var engine = new Engine())
+            {
+                engine.GetMetadata(inputFile);
+            }
+
+            var duration = inputFile.Metadata.Duration;
+            double totalDuration = duration.TotalSeconds;
+
+            pbh.Run(totalDuration);
+            pbh.PercentageChanged += (s, p) => Model.Progress = p;
         }
 
         private void IncBtn_OnClick(object sender, RoutedEventArgs e)

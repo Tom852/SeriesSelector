@@ -27,4 +27,7 @@
         <Setter Property="Button.Margin" Value ="10 20" />
     </Style>
 
+    <local:ProgressToVisibilityConverter x:Key="MyProgressToVisibilityConverter" />
+
+
 </ResourceDictionary>

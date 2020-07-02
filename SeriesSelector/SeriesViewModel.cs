@@ -22,6 +22,19 @@ namespace SeriesSelector
             }
         }
 
+        private double _progress;
+
+        public double Progress
+        {
+            get => _progress;
+            set
+            {
+                _progress = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Progress)));
+
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
     }
 }

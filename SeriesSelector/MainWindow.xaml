@@ -8,8 +8,14 @@
         Title="SeriesSelector by Tom" Height="800" Width="1200">
 
     <Window.Resources>
-        <ResourceDictionary Source="Resources.xaml" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources.xaml" />
+                <ResourceDictionary Source="Converters.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
+
 
     <Window.Background>
         <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
@@ -28,14 +34,14 @@
                 <Button Content="?" Style="{StaticResource TopLayerButton}" Click="ShowHelp" DockPanel.Dock="Right"  />
                 <Button Content="$" Style="{StaticResource TopLayerButton}" Click="Donate" DockPanel.Dock="Right" />
                 <Label Content="{Binding Time}" DockPanel.Dock="Right" VerticalAlignment="Center" FontSize="24 pt" Margin="0 0 10 5" FontWeight="ExtraBold" Foreground="AliceBlue" />
-                <Label></Label>
+                <ProgressBar Name="PB" Minimum="0" Maximum="100" Value="{Binding Progress}" Visibility="{Binding Progress, Converter={StaticResource MyProgressToVisibilityConverter}}"  Margin="30" Foreground="MidnightBlue"></ProgressBar>
             </DockPanel>
 
             <ListView Name="ListView" ItemsSource="{Binding SeriesList}" HorizontalContentAlignment="Stretch" Background="Transparent" BorderBrush="Transparent" KeyDown="ListView_OnKeyDown"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                            <DockPanel HorizontalAlignment="Stretch" LastChildFill="True">
+                        <DockPanel HorizontalAlignment="Stretch" LastChildFill="True">
                             <Button DockPanel.Dock="Left" Style="{StaticResource SmallButton}" Name="DecBtn" Content="&lt;" Click="DecBtn_OnClick" MouseRightButtonDown="DecBtn_OnRightClick" />
                             <Button DockPanel.Dock="Left" Name="PlayBtn" VerticalAlignment="Center" Width="150" Height="65" Margin="10,10" FontWeight="Bold" FontSize="16pt" Background="{Binding GetBGColorBrush}" Foreground="{Binding GetFGColorBrush}" Click="PlayBtn_OnClick">
                                 <TextBlock TextWrapping="Wrap" TextAlignment="Center" Text="{Binding SeriesNameAsString}"/>
