@@ -7,8 +7,7 @@
         <Setter Property="Button.VerticalAlignment" Value ="Center" />
         <Style.Triggers>
             <Trigger Property="Button.IsMouseOver" Value="True">
-                <Setter Property="Button.Background" Value="Azure" />
-                <Setter Property="Button.Foreground" Value="Black"></Setter>
+                <Setter Property="Button.Foreground" Value="Black" />
             </Trigger>
         </Style.Triggers>
     </Style>
