@@ -42,47 +42,12 @@ namespace SeriesSelector
             Application.Current.DispatcherUnhandledException += HandleException;
         }
 
-        private void StoreData(object sender, EventArgs e)
-        {
-            new PersistenceMaster().Persist(Model.SeriesList);
-        }
-
-
-        private void HandleException(object s, DispatcherUnhandledExceptionEventArgs a)
-        {
-            string who = s.ToString();
-            string why = a.Exception.Message;
-            MessageBox.Show($"{who} caused an error:\n{why}", "An Ooopsie happened", MessageBoxButton.OK, MessageBoxImage.Error);
-            a.Handled = true;
-        }
-
+        #region ButtonClicks
         private void PlayBtn_OnClick(object sender, RoutedEventArgs e)
         {
             var index = GetIndexOfElementThatWasClicked(sender);
             Series s = Model.SeriesList[index];
             Play(s);
-        }
-
-        private void Play(Series s)
-        {
-            InitializeProgressBar(s);
-            s.Play();
-        }
-    
-
-        private void InitializeProgressBar(Series series)
-        {
-            pbh?.Stop();
-            var inputFile = new MediaToolkit.Model.MediaFile { Filename = series.GetFullFilePathOfCurrentEpisode() };
-            using (var engine = new Engine())
-            {
-                engine.GetMetadata(inputFile);
-            }
-
-            var duration = inputFile.Metadata.Duration.TotalSeconds;
-
-            pbh.Start(duration);
-            pbh.PercentageChanged += (s, p) => Model.Progress = p;
         }
 
         private void IncBtn_OnClick(object sender, RoutedEventArgs e)
@@ -109,13 +74,6 @@ namespace SeriesSelector
             Model.SeriesList[index].Decrease(20);
         }
 
-        private int GetIndexOfElementThatWasClicked(object sender)
-        {
-            var item = (sender as FrameworkElement).DataContext;
-            int index = ListView.Items.IndexOf(item);
-            return index;
-        }
-
         private void AddSeries(object sender, RoutedEventArgs e)
         {
             using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
@@ -137,6 +95,37 @@ namespace SeriesSelector
             }
         }
 
+        private void RemoveHandler(object sender, RoutedEventArgs e)
+        {
+            var index = GetIndexOfElementThatWasClicked(sender);
+            Series s = Model.SeriesList[index];
+            RemoveSeries(s, index);
+        }
+
+        private void FindHandler(object sender, RoutedEventArgs e)
+        {
+            var index = GetIndexOfElementThatWasClicked(sender);
+            Series s = Model.SeriesList[index];
+            var path = s.GetFullFilePathOfCurrentEpisode();
+            string argument = $"/e, /select, \"{path}\"";
+            System.Diagnostics.Process.Start("explorer.exe", argument);
+        }
+
+        private void ShowHelp(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Right click the arrows to skip 20 episodes at once.\nTo remove a series, mark the text an press DEL.", "Hints", System.Windows.MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void Donate(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Feel free to donate with Paypal to thomaskistler (at) bluewin (dot) ch", "Donate", System.Windows.MessageBoxButton.OK, MessageBoxImage.Information);
+            System.Diagnostics.Process.Start("https://www.paypal.me/tomk453");
+        }
+
+        #endregion ButtonClicks
+
+
+        #region SCrollAndKeyEvents
         private void ListView_OnKeyDown(object sender, KeyEventArgs e)
         {
             var item = ListView.SelectedItem;
@@ -156,13 +145,61 @@ namespace SeriesSelector
             e.Handled = true;
         }
 
-        private void RemoveHandler(object sender, RoutedEventArgs e)
+        private void ScrollerinoHandler(object sender, MouseWheelEventArgs e)
         {
-            var index = GetIndexOfElementThatWasClicked(sender);
-            Series s = Model.SeriesList[index];
-            RemoveSeries(s, index);
+            ScrollViewer scv = (ScrollViewer)sender;
+            scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
+            e.Handled = true;
+        }
+        #endregion
+
+        private void StoreData(object sender, EventArgs e)
+        {
+            new PersistenceMaster().Persist(Model.SeriesList);
         }
 
+
+        private void HandleException(object s, DispatcherUnhandledExceptionEventArgs a)
+        {
+            string who = s.ToString();
+            string why = a.Exception.Message;
+            MessageBox.Show($"{who} caused an error:\n{why}", "An Ooopsie happened", MessageBoxButton.OK, MessageBoxImage.Error);
+            a.Handled = true;
+        }
+
+
+        private void Play(Series s)
+        {
+            InitializeProgressBar(s);
+            s.Play();
+        }
+    
+
+        private void InitializeProgressBar(Series series)
+        {
+            pbh?.Stop();
+            var inputFile = new MediaToolkit.Model.MediaFile { Filename = series.GetFullFilePathOfCurrentEpisode() };
+            using (var engine = new Engine())
+            {
+                engine.GetMetadata(inputFile);
+            }
+
+            var duration = inputFile.Metadata.Duration.TotalSeconds;
+
+            pbh.Start(duration);
+            pbh.PercentageChanged += (s, p) => Model.Progress = p;
+        }
+
+        
+
+        private int GetIndexOfElementThatWasClicked(object sender)
+        {
+            var item = (sender as FrameworkElement).DataContext;
+            int index = ListView.Items.IndexOf(item);
+            return index;
+        }
+
+        
 
 
 
@@ -178,30 +215,8 @@ namespace SeriesSelector
         }
 
 
-        private void FindHandler(object sender, RoutedEventArgs e)
-        {
-            var index = GetIndexOfElementThatWasClicked(sender);
-            Series s = Model.SeriesList[index];
-            var path = s.GetFullFilePathOfCurrentEpisode();
-            string argument = $"/e, /select, \"{path}\"";
-            System.Diagnostics.Process.Start("explorer.exe", argument);
-        }
-        private void ScrollerinoHandler(object sender, MouseWheelEventArgs e)
-        {
-            ScrollViewer scv = (ScrollViewer)sender;
-            scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
-            e.Handled = true;
-        }
 
-        private void ShowHelp(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Right click the arrows to skip 20 episodes at once.\nTo remove a series, mark the text an press DEL.", "Hints", System.Windows.MessageBoxButton.OK, MessageBoxImage.Information);
-        }
 
-        private void Donate(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Feel free to donate with Paypal to thomaskistler (at) bluewin (dot) ch", "Donate", System.Windows.MessageBoxButton.OK, MessageBoxImage.Information);
-            System.Diagnostics.Process.Start("https://www.paypal.me/tomk453");
-        }
+
     }
 }
