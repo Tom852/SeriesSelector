@@ -21,7 +21,7 @@ namespace SeriesSelector
             T.Interval = new TimeSpan(0, 0, 1);
         }
 
-        public void Run(double durationInSecs)
+        public void Start(double durationInSecs)
         {
             Length = durationInSecs;
             T.Start();

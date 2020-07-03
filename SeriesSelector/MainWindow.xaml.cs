@@ -81,7 +81,7 @@ namespace SeriesSelector
 
             var duration = inputFile.Metadata.Duration.TotalSeconds;
 
-            pbh.Run(duration);
+            pbh.Start(duration);
             pbh.PercentageChanged += (s, p) => Model.Progress = p;
         }
 
