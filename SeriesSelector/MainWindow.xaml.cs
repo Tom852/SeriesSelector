@@ -129,6 +129,7 @@ namespace SeriesSelector
         private void ListView_OnKeyDown(object sender, KeyEventArgs e)
         {
             var item = ListView.SelectedItem;
+            if (item == null) return;
             int index = ListView.Items.IndexOf(item);
             Series targetSeries = Model.SeriesList[index];
 
@@ -154,6 +155,7 @@ namespace SeriesSelector
                     break;
             }
 
+            ListView.SelectedIndex = index;
             e.Handled = true;
         }
 
@@ -175,7 +177,8 @@ namespace SeriesSelector
         {
             string who = s.ToString();
             string why = a.Exception.Message;
-            MessageBox.Show($"{who} caused an error:\n{why}", "An Ooopsie happened", MessageBoxButton.OK, MessageBoxImage.Error);
+            string trace = a.Exception.StackTrace;
+            MessageBox.Show($"{who} caused an error:\n{why}\n{trace}", "An Ooopsie happened", MessageBoxButton.OK, MessageBoxImage.Error);
             a.Handled = true;
         }
 
