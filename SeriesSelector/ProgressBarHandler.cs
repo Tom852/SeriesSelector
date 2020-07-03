@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Windows.Threading;
+using MediaToolkit;
 
 namespace SeriesSelector
 {
@@ -21,12 +22,23 @@ namespace SeriesSelector
             T.Interval = new TimeSpan(0, 0, 1);
         }
 
-        public void Start(double durationInSecs)
+        public void Start(Series series)
         {
-            Length = durationInSecs;
+            Length = GetDuration(series);
             T.Start();
             T.Tick += OnTick;
             StartedAt = DateTime.Now;
+        }
+
+        private double GetDuration(Series series)
+        {
+            var inputFile = new MediaToolkit.Model.MediaFile { Filename = series.GetFullFilePathOfCurrentEpisode() };
+            using (var engine = new Engine())
+            {
+                engine.GetMetadata(inputFile);
+            }
+
+            return inputFile.Metadata.Duration.TotalSeconds;
         }
 
         private void OnTick(object sender, EventArgs e)
