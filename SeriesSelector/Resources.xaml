@@ -27,6 +27,15 @@
         <Setter Property="Button.Margin" Value ="10 20" />
     </Style>
 
+    <Style x:Key="SideButton" BasedOn="{StaticResource SmallButton}">
+        <Setter Property="Button.Visibility" Value="Collapsed" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},Path=IsMouseOver}" Value="True">
+                <Setter Property="Button.Visibility" Value="Visible" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
     <local:ProgressToVisibilityConverter x:Key="MyProgressToVisibilityConverter" />
 
 
