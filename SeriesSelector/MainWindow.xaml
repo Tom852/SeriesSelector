@@ -44,7 +44,7 @@
                 </ProgressBar>
             </DockPanel>
 
-            <ListView Name="ListView" ItemsSource="{Binding SeriesList}" HorizontalContentAlignment="Stretch" Background="Transparent" BorderBrush="Transparent" KeyDown="ListView_OnKeyDown"
+            <ListView Name="ListView" ItemsSource="{Binding SeriesList}" HorizontalContentAlignment="Stretch" Background="Transparent" BorderBrush="Transparent" PreviewKeyDown="ListView_OnKeyDown"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListView.ItemTemplate>
                     <DataTemplate>

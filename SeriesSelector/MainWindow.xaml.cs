@@ -132,14 +132,26 @@ namespace SeriesSelector
             int index = ListView.Items.IndexOf(item);
             Series targetSeries = Model.SeriesList[index];
 
-            if (e.Key == Key.Delete)
+            switch (e.Key)
             {
-                RemoveSeries(targetSeries, index);
-            }
-
-            if (e.Key == Key.Enter)
-            {
-                Play(targetSeries);
+                case Key.Delete:
+                    RemoveSeries(targetSeries, index);
+                    break;
+                case Key.Enter:
+                    Play(targetSeries);
+                    break;
+                case Key.Left:
+                    targetSeries.Decrease();
+                    break;
+                case Key.Right:
+                    targetSeries.Increase();
+                    break;
+                case Key.Up:
+                    targetSeries.Increase(20);
+                    break;
+                case Key.Down:
+                    targetSeries.Decrease(20);
+                    break;
             }
 
             e.Handled = true;
