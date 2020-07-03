@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -37,10 +38,12 @@ namespace SeriesSelector
             Model.SeriesList.CollectionChanged += StoreData;
 
             Closing += StoreData;
-            Closing += (o, a) => new PositionMaster(this).StorePosition();
+            Closing += StorePosition;
 
             Application.Current.DispatcherUnhandledException += HandleException;
         }
+
+
 
         #region ButtonClicks
         private void PlayBtn_OnClick(object sender, RoutedEventArgs e)
@@ -176,12 +179,20 @@ namespace SeriesSelector
             new PersistenceMaster().Persist(Model.SeriesList);
         }
 
+        private void StorePosition(object sender, CancelEventArgs e)
+        {
+            new PositionMaster(this).StorePosition();
+        }
+
 
         private void HandleException(object s, DispatcherUnhandledExceptionEventArgs a)
         {
             string who = s.ToString();
             string why = a.Exception.Message;
-            string trace = a.Exception.StackTrace;
+            string trace = string.Empty;
+            #if DEBUG
+            trace = a.Exception.StackTrace;
+            #endif
             MessageBox.Show($"{who} caused an error:\n{why}\n{trace}", "An Ooopsie happened", MessageBoxButton.OK, MessageBoxImage.Error);
             a.Handled = true;
         }
