@@ -134,6 +134,14 @@ namespace SeriesSelector
             }
         }
 
+
+        public void OpenInExplorer()
+        {
+            var path = GetFullFilePathOfCurrentEpisode();
+            string argument = $"/e, /select, \"{path}\"";
+            System.Diagnostics.Process.Start("explorer.exe", argument);
+        }
+
         public void Increase(int amount = 1)
         {
             if (CanIncrease(amount))

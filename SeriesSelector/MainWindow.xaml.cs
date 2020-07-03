@@ -109,10 +109,11 @@ namespace SeriesSelector
         {
             var index = GetIndexOfElementThatWasClicked(sender);
             Series s = Model.SeriesList[index];
-            var path = s.GetFullFilePathOfCurrentEpisode();
-            string argument = $"/e, /select, \"{path}\"";
-            System.Diagnostics.Process.Start("explorer.exe", argument);
+            s.OpenInExplorer();
+
         }
+
+
 
         private void HelpBtn_OnClick(object sender, RoutedEventArgs e)
         {
@@ -128,7 +129,7 @@ namespace SeriesSelector
         #endregion ButtonClicks
 
 
-        #region SCrollAndKeyEvents
+        #region ScrollAndKeyEvents
         private void ListView_OnKeyDown(object sender, KeyEventArgs e)
         {
             var item = ListView.SelectedItem;
@@ -157,7 +158,7 @@ namespace SeriesSelector
                     targetSeries.Decrease(20);
                     break;
                 case Key.E:
-                    //todo
+                    targetSeries.OpenInExplorer();
                     break;
 
             }
@@ -189,10 +190,7 @@ namespace SeriesSelector
         {
             string who = s.ToString();
             string why = a.Exception.Message;
-            string trace = string.Empty;
-            #if DEBUG
-            trace = a.Exception.StackTrace;
-            #endif
+            string trace = a.Exception.StackTrace;
             MessageBox.Show($"{who} caused an error:\n{why}\n{trace}", "An Ooopsie happened", MessageBoxButton.OK, MessageBoxImage.Error);
             a.Handled = true;
         }
@@ -200,23 +198,15 @@ namespace SeriesSelector
 
         private void Play(Series s)
         {
-            InitializeProgressBar(s);
+            StartProgressBar(s);
             s.Play();
         }
     
 
-        private void InitializeProgressBar(Series series)
+        private void StartProgressBar(Series series)
         {
             pbh?.Stop();
-            var inputFile = new MediaToolkit.Model.MediaFile { Filename = series.GetFullFilePathOfCurrentEpisode() };
-            using (var engine = new Engine())
-            {
-                engine.GetMetadata(inputFile);
-            }
-
-            var duration = inputFile.Metadata.Duration.TotalSeconds;
-
-            pbh.Start(duration);
+            pbh.Start(series);
             pbh.PercentageChanged += (s, p) => Model.Progress = p;
         }
 
@@ -243,7 +233,6 @@ namespace SeriesSelector
                 Model.SeriesList.RemoveAt(index);
             }
         }
-
 
 
 
