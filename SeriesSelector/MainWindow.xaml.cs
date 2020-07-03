@@ -74,7 +74,7 @@ namespace SeriesSelector
             Model.SeriesList[index].Decrease(20);
         }
 
-        private void AddSeries(object sender, RoutedEventArgs e)
+        private void PlusBtn_OnClick(object sender, RoutedEventArgs e)
         {
             using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
             {
@@ -95,14 +95,14 @@ namespace SeriesSelector
             }
         }
 
-        private void RemoveHandler(object sender, RoutedEventArgs e)
+        private void XBtn_OnClick(object sender, RoutedEventArgs e)
         {
             var index = GetIndexOfElementThatWasClicked(sender);
             Series s = Model.SeriesList[index];
             RemoveSeries(s, index);
         }
 
-        private void FindHandler(object sender, RoutedEventArgs e)
+        private void EBtn_OnClick(object sender, RoutedEventArgs e)
         {
             var index = GetIndexOfElementThatWasClicked(sender);
             Series s = Model.SeriesList[index];
@@ -111,12 +111,12 @@ namespace SeriesSelector
             System.Diagnostics.Process.Start("explorer.exe", argument);
         }
 
-        private void ShowHelp(object sender, RoutedEventArgs e)
+        private void HelpBtn_OnClick(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Right click the arrows to skip 20 episodes at once.\nTo remove a series, mark the text an press DEL.", "Hints", System.Windows.MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        private void Donate(object sender, RoutedEventArgs e)
+        private void DollarBtn_OnClick(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Feel free to donate with Paypal to thomaskistler (at) bluewin (dot) ch", "Donate", System.Windows.MessageBoxButton.OK, MessageBoxImage.Information);
             System.Diagnostics.Process.Start("https://www.paypal.me/tomk453");
@@ -153,6 +153,10 @@ namespace SeriesSelector
                 case Key.Down:
                     targetSeries.Decrease(20);
                     break;
+                case Key.E:
+                    //todo
+                    break;
+
             }
 
             ListView.SelectedIndex = index;
