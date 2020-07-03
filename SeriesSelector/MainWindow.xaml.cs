@@ -112,7 +112,7 @@ namespace SeriesSelector
 
         private void HelpBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Right click the arrows to skip 20 episodes at once.\nTo remove a series, mark the text an press DEL.", "Hints", System.Windows.MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("Right click the arrows to skip 20 episodes at once.\nYou can also mark a list entry and use the keyboard (Arrow Keys, DEL, E) to access functionality.", "Pro Tips", System.Windows.MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void DollarBtn_OnClick(object sender, RoutedEventArgs e)

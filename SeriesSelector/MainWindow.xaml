@@ -32,11 +32,14 @@
                        VerticalAlignment="Center" FontSize="24 pt" Margin="10"
                        FontWeight="Heavy" Foreground="AliceBlue" />
                 <Button Content="+" Style="{StaticResource TopLayerButton}"
-                        Click="PlusBtn_OnClick" DockPanel.Dock="Right" Margin="10 20 15 20" />
+                        Click="PlusBtn_OnClick" DockPanel.Dock="Right" Margin="10 20 15 20"
+                        ToolTip="Add Series"/>
                 <Button Content="?" Style="{StaticResource TopLayerButton}"
-                        Click="HelpBtn_OnClick" DockPanel.Dock="Right" />
+                        Click="HelpBtn_OnClick" DockPanel.Dock="Right"
+                        ToolTip="Pro Tips"/>
                 <Button Content="$" Style="{StaticResource TopLayerButton}"
-                        Click="DollarBtn_OnClick" DockPanel.Dock="Right" />
+                        Click="DollarBtn_OnClick" DockPanel.Dock="Right"
+                        ToolTip="Donate"/>
                 <Label Content="{Binding Time}" DockPanel.Dock="Right"
                        VerticalAlignment="Center" FontSize="24 pt" Margin="0 0 10 5"
                        FontWeight="ExtraBold" Foreground="AliceBlue" />
@@ -60,23 +63,27 @@
                         <DockPanel HorizontalAlignment="Stretch" LastChildFill="True">
                             <Button DockPanel.Dock="Left" Style="{StaticResource SmallButton}"
                                     Name="DecBtn" Content="&lt;" Click="DecBtn_OnClick"
-                                    MouseRightButtonDown="DecBtn_OnRightClick" />
+                                    MouseRightButtonDown="DecBtn_OnRightClick"
+                                    ToolTip="Decrease Marker by 1 or 20 (Right Click) Episodes"/>
                             <Button DockPanel.Dock="Left" Name="PlayBtn" VerticalAlignment="Center"
                                     Width="150" Height="65" Margin="10,10" FontWeight="Bold" FontSize="16pt"
                                     Background="{Binding SeriesNameAsString, Converter={StaticResource PlayBtnBG}}"
                                     Foreground="{Binding SeriesNameAsString, Converter={StaticResource PlayBtnFG}}"
-                                    Click="PlayBtn_OnClick">
+                                    Click="PlayBtn_OnClick" ToolTip="Play Episode">
                                 <TextBlock TextWrapping="Wrap" TextAlignment="Center" Text="{Binding SeriesNameAsString}" />
                             </Button>
                             <Button DockPanel.Dock="Left" Style="{StaticResource SmallButton}"
                                     Name="IncBtn" Content="&gt;"
-                                    Click="IncBtn_OnClick" MouseRightButtonDown="IncBtn_OnRightClick" />
+                                    Click="IncBtn_OnClick" MouseRightButtonDown="IncBtn_OnRightClick"
+                                    ToolTip="Decrease Marker by 1 or 20 (Right Click) Episodes"/>
                             <Button DockPanel.Dock="Right" Style="{StaticResource SideButton}"
                                     Name="DeleteBtn" Content="X" Margin="5 10 10 10"
-                                    Click="XBtn_OnClick" />
+                                    Click="XBtn_OnClick"
+                                    ToolTip="Remove List Entry"/>
                             <Button DockPanel.Dock="Right" Style="{StaticResource SideButton}"
                                     Name="FindBtn" Content="E"
-                                    Click="EBtn_OnClick" />
+                                    Click="EBtn_OnClick" 
+                                    ToolTip="Open in Explorer"/>
                             <Label  DockPanel.Dock="Left"  Name="Label" Content="{Binding CurrentEpisodeAsString}"
                                     VerticalAlignment="Center" HorizontalAlignment="Stretch"
                                     Margin="10,0" FontSize="28pt" Foreground="AliceBlue" />
