@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Documents;
+﻿using MediaToolkit;
+using System;
 using System.Windows.Threading;
-using MediaToolkit;
 
 namespace SeriesSelector
 {
@@ -15,8 +10,10 @@ namespace SeriesSelector
         public DispatcherTimer T { get; set; } = new DispatcherTimer();
         private DateTime StartedAt { get; set; }
 
-        public event EventHandler<double> PercentageChanged; 
-        public event EventHandler IsDone; 
+        public event EventHandler<double> PercentageChanged;
+
+        public event EventHandler IsDone;
+
         public ProgressBarHandler()
         {
             T.Interval = new TimeSpan(0, 0, 1);

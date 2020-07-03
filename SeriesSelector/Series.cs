@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
-using System.Windows.Media;
 
 namespace SeriesSelector
 {
@@ -72,8 +71,6 @@ namespace SeriesSelector
             return SeriesNameAsString;
         }
 
-
-
         public Series(string filepath)
         {
             FilesystemPath = filepath;
@@ -133,7 +130,6 @@ namespace SeriesSelector
                 //Just do nothing and ignore the request
             }
         }
-
 
         public void OpenInExplorer()
         {

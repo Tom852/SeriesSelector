@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace SeriesSelector
 {
@@ -31,7 +30,6 @@ namespace SeriesSelector
             {
                 _progress = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Progress)));
-
             }
         }
 

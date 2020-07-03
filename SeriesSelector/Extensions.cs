@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
 namespace SeriesSelector
 {
     public static class Extensions
     {
-
         public static byte[] ToRGB(this string name)
         {
             var list = name.ToLower().ToList();
@@ -17,7 +12,7 @@ namespace SeriesSelector
             char c2 = list[1];
             char c3 = list[0];
 
-            var arry = new char[] {c1, c2, c3};
+            var arry = new char[] { c1, c2, c3 };
             return arry.Select(ScaledByteFromChar).ToArray();
         }
 

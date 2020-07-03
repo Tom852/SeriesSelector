@@ -7,7 +7,6 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Threading;
-using MediaToolkit;
 using Application = System.Windows.Application;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MessageBox = System.Windows.MessageBox;
@@ -43,9 +42,8 @@ namespace SeriesSelector
             Application.Current.DispatcherUnhandledException += HandleException;
         }
 
-
-
         #region ButtonClicks
+
         private void PlayBtn_OnClick(object sender, RoutedEventArgs e)
         {
             var index = GetIndexOfElementThatWasClicked(sender);
@@ -110,10 +108,7 @@ namespace SeriesSelector
             var index = GetIndexOfElementThatWasClicked(sender);
             Series s = Model.SeriesList[index];
             s.OpenInExplorer();
-
         }
-
-
 
         private void HelpBtn_OnClick(object sender, RoutedEventArgs e)
         {
@@ -128,8 +123,8 @@ namespace SeriesSelector
 
         #endregion ButtonClicks
 
-
         #region ScrollAndKeyEvents
+
         private void ListView_OnKeyDown(object sender, KeyEventArgs e)
         {
             var item = ListView.SelectedItem;
@@ -160,7 +155,6 @@ namespace SeriesSelector
                 case Key.E:
                     targetSeries.OpenInExplorer();
                     break;
-
             }
 
             ListView.SelectedIndex = index;
@@ -173,7 +167,8 @@ namespace SeriesSelector
             scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
             e.Handled = true;
         }
-        #endregion
+
+        #endregion ScrollAndKeyEvents
 
         private void StoreData(object sender, EventArgs e)
         {
@@ -185,7 +180,6 @@ namespace SeriesSelector
             new PositionMaster(this).StorePosition();
         }
 
-
         private void HandleException(object s, DispatcherUnhandledExceptionEventArgs a)
         {
             string who = s.ToString();
@@ -195,13 +189,11 @@ namespace SeriesSelector
             a.Handled = true;
         }
 
-
         private void Play(Series s)
         {
             StartProgressBar(s);
             s.Play();
         }
-    
 
         private void StartProgressBar(Series series)
         {
@@ -210,18 +202,12 @@ namespace SeriesSelector
             pbh.PercentageChanged += (s, p) => Model.Progress = p;
         }
 
-        
-
         private int GetIndexOfElementThatWasClicked(object sender)
         {
             var item = (sender as FrameworkElement).DataContext;
             int index = ListView.Items.IndexOf(item);
             return index;
         }
-
-        
-
-
 
         private void RemoveSeries(Series targetSeries, int index)
         {
@@ -233,9 +219,5 @@ namespace SeriesSelector
                 Model.SeriesList.RemoveAt(index);
             }
         }
-
-
-
-
     }
 }

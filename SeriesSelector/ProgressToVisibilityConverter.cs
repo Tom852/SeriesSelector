@@ -9,7 +9,7 @@ namespace SeriesSelector
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            double val = (double) value;
+            double val = (double)value;
             bool isNotRunning = val <= 1e-10d || val >= 100d;
             return isNotRunning ? Visibility.Hidden : Visibility.Visible;
         }
