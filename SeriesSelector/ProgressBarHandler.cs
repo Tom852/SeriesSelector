@@ -15,7 +15,7 @@ namespace SeriesSelector
 
         public ProgressBarHandler()
         {
-            T.Interval = new TimeSpan(0, 0, 2);
+            T.Interval = new TimeSpan(0, 0, 1);
         }
 
         public void Start(Series series)

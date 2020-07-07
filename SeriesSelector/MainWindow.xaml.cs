@@ -207,13 +207,16 @@ namespace SeriesSelector
 
         private void StartProgressBar(Series series)
         {
-            Action todoItem = () =>
+            void todoItem()
             {
-                pbh.Stop();
-                pbh.Start(series);
-            };
+                lock (this)
+                {
+                    pbh.Stop();
+                    pbh.Start(series);
+                }
+            }
 
-            Thread thread = new Thread(new ThreadStart(todoItem));
+            Thread thread = new Thread(todoItem);
             thread.Start();
         }
 
