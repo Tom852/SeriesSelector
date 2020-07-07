@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -40,6 +42,7 @@ namespace SeriesSelector
             Closing += StorePosition;
 
             Application.Current.DispatcherUnhandledException += HandleException;
+            pbh.PercentageChanged += (s, p) => Model.Progress = p;
         }
 
         #region ButtonClicks
@@ -191,15 +194,27 @@ namespace SeriesSelector
 
         private void Play(Series s)
         {
-            StartProgressBar(s);
-            s.Play();
+            try
+            {
+                StartProgressBar(s);
+                s.Play();
+            }
+            catch (FileNotFoundException)
+            {
+                //just do nothing
+            }
         }
 
         private void StartProgressBar(Series series)
         {
-            pbh?.Stop();
-            pbh.Start(series);
-            pbh.PercentageChanged += (s, p) => Model.Progress = p;
+            Action todoItem = () =>
+            {
+                pbh.Stop();
+                pbh.Start(series);
+            };
+
+            Thread thread = new Thread(new ThreadStart(todoItem));
+            thread.Start();
         }
 
         private int GetIndexOfElementThatWasClicked(object sender)

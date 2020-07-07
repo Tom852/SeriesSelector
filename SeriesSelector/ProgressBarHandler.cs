@@ -1,5 +1,6 @@
 ﻿using MediaToolkit;
 using System;
+using System.IO;
 using System.Windows.Threading;
 
 namespace SeriesSelector
@@ -12,11 +13,9 @@ namespace SeriesSelector
 
         public event EventHandler<double> PercentageChanged;
 
-        public event EventHandler IsDone;
-
         public ProgressBarHandler()
         {
-            T.Interval = new TimeSpan(0, 0, 1);
+            T.Interval = new TimeSpan(0, 0, 2);
         }
 
         public void Start(Series series)
@@ -58,7 +57,6 @@ namespace SeriesSelector
         {
             T.Stop();
             T.Tick -= OnTick;
-            IsDone?.Invoke(this, null);
         }
     }
 }

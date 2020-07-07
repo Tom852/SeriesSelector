@@ -120,15 +120,8 @@ namespace SeriesSelector
 
         public void Play()
         {
-            try
-            {
-                System.Diagnostics.Process.Start(GetFullFilePathOfCurrentEpisode());
-                Increase();
-            }
-            catch (FileNotFoundException)
-            {
-                //Just do nothing and ignore the request
-            }
+            System.Diagnostics.Process.Start(GetFullFilePathOfCurrentEpisode());
+            Increase();
         }
 
         public void OpenInExplorer()
