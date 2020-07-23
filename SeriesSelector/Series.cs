@@ -126,20 +126,17 @@ namespace SeriesSelector
 
         public void OpenInExplorer()
         {
+            var argument = "";
             if (File.Exists(GetFullFilePathOfCurrentEpisode()))
             {
-                string argument = $"/e, /select, \"{GetFullFilePathOfCurrentEpisode()}\"";
-                System.Diagnostics.Process.Start("explorer.exe", argument);
+                argument = $"/e, /select, \"{GetFullFilePathOfCurrentEpisode()}\"";
             }
             else if (Directory.Exists(FilesystemPath))
             {
-                string argument = $"\"{FilesystemPath}\"";
-                System.Diagnostics.Process.Start("explorer.exe", argument);
+                argument = $"\"{FilesystemPath}\"";
             }
-            else
-            {
-                System.Diagnostics.Process.Start("explorer.exe");
-            }
+            System.Diagnostics.Process.Start("explorer.exe", argument);
+
         }
 
         public void Increase(int amount = 1)
