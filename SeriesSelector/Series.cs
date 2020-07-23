@@ -126,9 +126,20 @@ namespace SeriesSelector
 
         public void OpenInExplorer()
         {
-            var path = GetFullFilePathOfCurrentEpisode();
-            string argument = $"/e, /select, \"{path}\"";
-            System.Diagnostics.Process.Start("explorer.exe", argument);
+            if (File.Exists(GetFullFilePathOfCurrentEpisode()))
+            {
+                string argument = $"/e, /select, \"{GetFullFilePathOfCurrentEpisode()}\"";
+                System.Diagnostics.Process.Start("explorer.exe", argument);
+            }
+            else if (Directory.Exists(FilesystemPath))
+            {
+                string argument = $"\"{FilesystemPath}\"";
+                System.Diagnostics.Process.Start("explorer.exe", argument);
+            }
+            else
+            {
+                System.Diagnostics.Process.Start("explorer.exe");
+            }
         }
 
         public void Increase(int amount = 1)
@@ -149,8 +160,15 @@ namespace SeriesSelector
 
         public bool CanIncrease(int amount = 1)
         {
-            var maxIndex = GetFileList().Length;
-            return CurrentIndex + amount < maxIndex;
+            try
+            {
+                var maxIndex = GetFileList().Length;
+                return CurrentIndex + amount < maxIndex;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public bool CanDecrease(int amount)

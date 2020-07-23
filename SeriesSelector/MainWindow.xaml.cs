@@ -194,12 +194,21 @@ namespace SeriesSelector
 
         private void Play(Series s)
         {
+            if (!File.Exists(s.GetFullFilePathOfCurrentEpisode()))
+            {
+                return;
+            }
+
             try
             {
                 StartProgressBar(s);
                 s.Play();
             }
             catch (FileNotFoundException)
+            {
+                //just do nothing
+            }
+            catch (Win32Exception)
             {
                 //just do nothing
             }
@@ -211,8 +220,15 @@ namespace SeriesSelector
             {
                 lock (this)
                 {
-                    pbh.Stop();
-                    pbh.Start(series);
+                    try
+                    {
+                        pbh.Stop();
+                        pbh.Start(series);
+                    }
+                    catch (FileNotFoundException)
+                    {
+                        //do nothing
+                    }
                 }
             }
 
