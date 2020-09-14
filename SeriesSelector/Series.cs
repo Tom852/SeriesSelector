@@ -1,5 +1,6 @@
 ﻿using SeriesSelector.Annotations;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -84,7 +85,11 @@ namespace SeriesSelector
 
         public string[] GetFileList()
         {
-            return Directory.GetFiles(FilesystemPath);
+            var files = Directory.GetFiles(FilesystemPath);
+            List<string> list = new List<string>(files);
+            list.RemoveAll(i => i.ToLower().Contains("\\thumbs.db"));
+            list.RemoveAll(i => i.ToLower().Contains("\\desktop.ini"));
+            return list.ToArray();
         }
 
         public string GetFullFilePathOfCurrentEpisode()
