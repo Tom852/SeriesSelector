@@ -21,6 +21,10 @@ namespace SeriesSelector
         public void Start(Series series)
         {
             Length = GetDuration(series);
+            if (Length <= 0.1)
+            {
+                return;
+            }
             T.Start();
             T.Tick += OnTick;
             StartedAt = DateTime.Now;
@@ -34,6 +38,10 @@ namespace SeriesSelector
                 engine.GetMetadata(inputFile);
             }
 
+            if (inputFile.Metadata == null)
+            {
+                return 0;
+            }
             return inputFile.Metadata.Duration.TotalSeconds;
         }
 
