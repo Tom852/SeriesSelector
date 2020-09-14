@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace SeriesSelector
 {
@@ -9,8 +10,17 @@ namespace SeriesSelector
             var list = name.ToLower().ToList();
             char c1 = list[0];
             list.Reverse();
-            char c2 = list[1];
             char c3 = list[0];
+
+            char c2;
+            if (list.Count > 1)
+            {
+                c2 = list[1];
+            }
+            else
+            {
+                c2 = Char.MaxValue;
+            }
 
             var arry = new char[] { c1, c2, c3 };
             return arry.Select(ScaledByteFromChar).ToArray();
