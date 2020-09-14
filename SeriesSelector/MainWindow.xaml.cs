@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -122,6 +123,17 @@ namespace SeriesSelector
         {
             MessageBox.Show("Feel free to donate with Paypal to thomaskistler (at) bluewin (dot) ch", "Donate", System.Windows.MessageBoxButton.OK, MessageBoxImage.Information);
             System.Diagnostics.Process.Start("https://www.paypal.me/tomk453");
+        }
+
+        private void ShutdownBtn_OnClick(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show(
+                $"Are you sure to shutdown your PC?", "Shutdown",
+                System.Windows.MessageBoxButton.OKCancel, MessageBoxImage.Exclamation);
+            if (messageBoxResult == MessageBoxResult.OK)
+            {
+                Process.Start("shutdown", "/s /t 0");
+            }
         }
 
         #endregion ButtonClicks

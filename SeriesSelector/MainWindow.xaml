@@ -40,6 +40,10 @@
                 <Button Content="$" Style="{StaticResource TopLayerButton}"
                         Click="DollarBtn_OnClick" DockPanel.Dock="Right"
                         ToolTip="Donate"/>
+                <Button Content="Z" Style="{StaticResource TopLayerButton}"
+                        Background="#330000"
+                        Click="ShutdownBtn_OnClick" DockPanel.Dock="Right"
+                        ToolTip="Shutdown PC"/>
                 <Label Content="{Binding Time}" DockPanel.Dock="Right"
                        VerticalAlignment="Center" FontSize="24 pt" Margin="0 0 10 5"
                        FontWeight="ExtraBold" Foreground="AliceBlue" />

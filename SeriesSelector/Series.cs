@@ -44,7 +44,6 @@ namespace SeriesSelector
             {
                 string filename = GetFileNameOfCurrentEpisode();
 
-
                 Regex r = new Regex(@"(.* - )([0-3]?\d[x\-_eE]?(\d{2}).*)");
                 Match m = r.Match(filename);
                 if (m.Success)
