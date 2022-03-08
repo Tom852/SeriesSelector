@@ -19,7 +19,7 @@ namespace SeriesSelector
             }
             else
             {
-                c2 = Char.MaxValue;
+                c2 = char.MaxValue;
             }
 
             var arry = new char[] { c1, c2, c3 };

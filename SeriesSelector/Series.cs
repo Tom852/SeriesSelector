@@ -7,127 +7,116 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
+using System.Xml.Serialization;
 
+// should rethink exception handling
 namespace SeriesSelector
 {
     [Serializable]
     public class Series : INotifyPropertyChanged
     {
-        public string FilesystemPath { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        private int _currentIndex;
 
-        public int CurrentIndex
+        public string FolderPath { get; set; }
+
+        private string _currentFileName;
+        public string CurrentFileName
         {
             get
             {
-                return _currentIndex;
+                return _currentFileName;
             }
             set
             {
-                _currentIndex = value;
-                OnPropertyChanged(nameof(CurrentIndex));
-                OnPropertyChanged(nameof(CurrentEpisodeAsString));
+                _currentFileName = value;
+                OnPropertyChanged(nameof(EpisodeDisplayName));
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
 
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+
+
+        public Series(string folderPath)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            FolderPath = folderPath;
+            CurrentFileName = this.GetFileList().FirstOrDefault();
         }
 
-        public string CurrentEpisodeAsString
+        public Series() { } // for serializer
+
+
+        public string SeriesDisplayName
         {
             get
             {
-                string filename = GetFileNameOfCurrentEpisode();
-
-                Regex r = new Regex(@"(.* - )([0-3]?\d[x\-_eE]?(\d{2}).*)");
-                Match m = r.Match(filename);
-                if (m.Success)
                 {
-                    return m.Groups[2].Value;
-                }
-                else
-                {
-                    return filename;
+                    return FolderPath?.Split('/', '\\').ToList().Last() ?? "Error: Folder not set";
                 }
             }
         }
 
-        public string SeriesNameAsString
+
+        public string EpisodeDisplayName
         {
+            // todo: auslagern 'get episode and season', bei missing file erkennen und suchen.
             get
             {
-                string[] splitted = FilesystemPath.Split('/', '\\');
-                LinkedList<string> makeMyLifeEasy = new LinkedList<string>(splitted);
-                return makeMyLifeEasy.Last.Value;
+                try
+                {
+                    var (hasError, message) = Validate();
+                    if (!string.IsNullOrEmpty(message))
+                    {
+                        return message;
+                    }
+
+                    Regex r = new Regex(@"(.* - )([0-3]?\d[x\-_eE]?(\d{2}).*)");
+                    Match m = r.Match(this.CurrentFileName);
+                    if (m.Success)
+                    {
+                        return m.Groups[2].Value;
+                    }
+                    else
+                    {
+                        return this.CurrentFileName;
+                    }
+                }
+                catch
+                {
+                    return "Error";
+                }
+
             }
         }
 
-        public override string ToString()
-        {
-            return SeriesNameAsString;
-        }
 
-        public Series(string filepath)
-        {
-            FilesystemPath = filepath;
-            CurrentIndex = 0;
-        }
+        public override string ToString() => SeriesDisplayName;
 
-        public Series()
-        {
-        }
 
-        public string[] GetFileList()
+        private FileListCache fileListCache = new FileListCache();
+
+        private List<string> GetFileList()
         {
-            var files = Directory.GetFiles(FilesystemPath);
-            List<string> list = new List<string>(files);
-            list.RemoveAll(i => i.ToLower().Contains("\\thumbs.db"));
-            list.RemoveAll(i => i.ToLower().Contains("\\desktop.ini"));
-            return list.ToArray();
+            // is cached because i call this method 'too' often and may be slow on slow network devices - leads to bad UX
+            // note - did not solve the problem, may be c ached anyway.
+            Func<List<string>> filegetter = () =>
+                 Directory.GetFiles(FolderPath)
+                .Where(f => !File.GetAttributes(f).HasFlag(FileAttributes.Hidden))
+                .Select(f => Path.GetFileName(f))
+                .ToList();
+
+            return fileListCache.GetFiles(filegetter);
+
         }
 
         public string GetFullFilePathOfCurrentEpisode()
-        {
-            try
-            {
-                var allFiles = GetFileList();
-                return allFiles[CurrentIndex];
-            }
-            catch (IndexOutOfRangeException)
-            {
-                if (GetFileList().Any())
-                {
-                    CurrentIndex = 0;
-                    return GetFileList()[CurrentIndex];
-                }
-                else
-                {
-                    return "Error - Folder Empty - Please Remove";
-                }
-            }
-            catch (DirectoryNotFoundException)
-            {
-                return "Error - Folder not Found - Please Remove";
-            }
-        }
-
-        public string GetFileNameOfCurrentEpisode()
-        {
-            var full = GetFullFilePathOfCurrentEpisode();
-            var justName = Path.GetFileName(full);
-            return justName;
-        }
+            => Path.Combine(this.FolderPath, this.CurrentFileName);
 
         public void Play()
         {
             System.Diagnostics.Process.Start(GetFullFilePathOfCurrentEpisode());
             Increase();
+
         }
 
         public void OpenInExplorer()
@@ -137,9 +126,9 @@ namespace SeriesSelector
             {
                 argument = $"/e, /select, \"{GetFullFilePathOfCurrentEpisode()}\"";
             }
-            else if (Directory.Exists(FilesystemPath))
+            else if (Directory.Exists(FolderPath))
             {
-                argument = $"\"{FilesystemPath}\"";
+                argument = $"\"{FolderPath}\"";
             }
             System.Diagnostics.Process.Start("explorer.exe", argument);
 
@@ -147,36 +136,82 @@ namespace SeriesSelector
 
         public void Increase(int amount = 1)
         {
-            if (CanIncrease(amount))
-            {
-                CurrentIndex += amount;
-            }
+
+                if (CanIncrease(amount))
+                {
+                    var currentIndex = this.GetIndexOfCurrentEpisode();
+                    CurrentFileName = this.GetFileList()[currentIndex + amount];
+                }
+
         }
 
         public void Decrease(int amount = 1)
         {
             if (CanDecrease(amount))
             {
-                CurrentIndex -= amount;
+                var currentIndex = this.GetIndexOfCurrentEpisode();
+                CurrentFileName = this.GetFileList()[currentIndex - amount];
             }
         }
 
         public bool CanIncrease(int amount = 1)
         {
-            try
-            {
-                var maxIndex = GetFileList().Length;
-                return CurrentIndex + amount < maxIndex;
-            }
-            catch
-            {
-                return false;
-            }
+            var maxIndex = GetFileList().Count;
+            return GetIndexOfCurrentEpisode() + amount < maxIndex;
         }
 
         public bool CanDecrease(int amount)
         {
-            return CurrentIndex - amount >= 0;
+            return GetIndexOfCurrentEpisode() - amount >= 0;
+        }
+
+
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private int GetIndexOfCurrentEpisode()
+        {
+            var index = this.GetFileList().IndexOf(this.CurrentFileName);
+            if (index == -1)
+            {
+                throw new FileNotFoundException("File not found"); // would work otherwise, but unexpecedtily reset your state
+            }
+            else
+            {
+                return index;
+            }
+        }
+
+        private (bool hasError, string errorMessage) Validate()
+        {
+
+            if (!Directory.Exists(this.FolderPath))
+            {
+                return (true, "Error - Folder not Found");
+            }
+
+            if (this.CurrentFileName != null && File.Exists(Path.Combine(this.FolderPath, this.CurrentFileName)))
+            {
+                return (false, string.Empty);
+
+            }
+
+            if (GetFileList().Any())
+            {
+                var firstFile = GetFileList().First();
+                // could just reset to first file.... not sure.
+                return (true, $"File '{this.CurrentFileName}' was not found");
+
+            }
+            else
+            {
+                return (true, "Error - Folder empty");
+
+            }
         }
     }
 }

@@ -40,6 +40,9 @@
                 <Button Content="$" Style="{StaticResource TopLayerButton}"
                         Click="DollarBtn_OnClick" DockPanel.Dock="Right"
                         ToolTip="Donate"/>
+                <Button Content="O" Style="{StaticResource TopLayerButton}"
+                        Click="OptionsBtn_OnClick" DockPanel.Dock="Right"
+                        ToolTip="Options"/>
                 <Button Content="Z" Style="{StaticResource TopLayerButton}"
                         Background="#330000"
                         Click="ShutdownBtn_OnClick" DockPanel.Dock="Right"
@@ -71,10 +74,10 @@
                                     ToolTip="Decrease Marker by 1 or 20 (Right Click) Episodes"/>
                             <Button DockPanel.Dock="Left" Name="PlayBtn" VerticalAlignment="Center"
                                     Width="150" Height="65" Margin="10,10" FontWeight="Bold" FontSize="16pt"
-                                    Background="{Binding SeriesNameAsString, Converter={StaticResource PlayBtnBG}}"
-                                    Foreground="{Binding SeriesNameAsString, Converter={StaticResource PlayBtnFG}}"
+                                    Background="{Binding SeriesDisplayName, Converter={StaticResource PlayBtnBG}}"
+                                    Foreground="{Binding SeriesDisplayName, Converter={StaticResource PlayBtnFG}}"
                                     Click="PlayBtn_OnClick" ToolTip="Play Episode">
-                                <TextBlock TextWrapping="Wrap" TextAlignment="Center" Text="{Binding SeriesNameAsString}" />
+                                <TextBlock TextWrapping="Wrap" TextAlignment="Center" Text="{Binding SeriesDisplayName}" />
                             </Button>
                             <Button DockPanel.Dock="Left" Style="{StaticResource SmallButton}"
                                     Name="IncBtn" Content="&gt;"
@@ -88,7 +91,7 @@
                                     Name="FindBtn" Content="E"
                                     Click="EBtn_OnClick" 
                                     ToolTip="Open in Explorer"/>
-                            <Label  DockPanel.Dock="Left"  Name="Label" Content="{Binding CurrentEpisodeAsString}"
+                            <Label  DockPanel.Dock="Left"  Name="Label" Content="{Binding EpisodeDisplayName}"
                                     VerticalAlignment="Center" HorizontalAlignment="Stretch"
                                     Margin="10,0" FontSize="28pt" Foreground="AliceBlue" />
                         </DockPanel>

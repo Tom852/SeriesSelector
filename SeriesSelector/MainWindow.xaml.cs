@@ -57,26 +57,56 @@ namespace SeriesSelector
 
         private void IncBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            var index = GetIndexOfElementThatWasClicked(sender);
-            Model.SeriesList[index].Increase();
+            try
+            {
+                var index = GetIndexOfElementThatWasClicked(sender);
+                Model.SeriesList[index].Increase();
+            }
+            catch
+            {
+                ShowGenericIOError();
+            }
+
         }
 
         private void IncBtn_OnRightClick(object sender, RoutedEventArgs e)
         {
-            var index = GetIndexOfElementThatWasClicked(sender);
-            Model.SeriesList[index].Increase(20);
+            try
+            {
+                var index = GetIndexOfElementThatWasClicked(sender);
+                Model.SeriesList[index].Increase(20);
+            }
+            catch
+            {
+                ShowGenericIOError();
+            }
         }
 
         private void DecBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            var index = GetIndexOfElementThatWasClicked(sender);
-            Model.SeriesList[index].Decrease();
+            try
+            {
+                var index = GetIndexOfElementThatWasClicked(sender);
+                Model.SeriesList[index].Decrease();
+            }
+            catch
+            {
+                ShowGenericIOError();
+            }
+
         }
 
         private void DecBtn_OnRightClick(object sender, RoutedEventArgs e)
         {
-            var index = GetIndexOfElementThatWasClicked(sender);
-            Model.SeriesList[index].Decrease(20);
+            try
+            {
+                var index = GetIndexOfElementThatWasClicked(sender);
+                Model.SeriesList[index].Decrease(20);
+            }
+            catch
+            {
+                ShowGenericIOError();
+            }
         }
 
         private void PlusBtn_OnClick(object sender, RoutedEventArgs e)
@@ -112,6 +142,12 @@ namespace SeriesSelector
             var index = GetIndexOfElementThatWasClicked(sender);
             Series s = Model.SeriesList[index];
             s.OpenInExplorer();
+        }
+
+        private void OptionsBtn_OnClick(object sender, RoutedEventArgs e)
+        {
+            var w = new OptionsWindow();
+            w.Show();
         }
 
         private void HelpBtn_OnClick(object sender, RoutedEventArgs e)
@@ -200,17 +236,12 @@ namespace SeriesSelector
             string who = s.ToString();
             string why = a.Exception.Message;
             string trace = a.Exception.StackTrace;
-            MessageBox.Show($"{who} caused an error:\n{why}\n{trace}", "An Ooopsie happened", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show($"{who} caused an unexpected error:\n{why}\n{trace}", "An Ooopsie happened", MessageBoxButton.OK, MessageBoxImage.Error);
             a.Handled = true;
         }
 
         private void Play(Series s)
         {
-            if (!File.Exists(s.GetFullFilePathOfCurrentEpisode()))
-            {
-                return;
-            }
-
             try
             {
                 StartProgressBar(s);
@@ -218,11 +249,11 @@ namespace SeriesSelector
             }
             catch (FileNotFoundException)
             {
-                //just do nothing
+                ShowGenericIOError();
             }
             catch (Win32Exception)
             {
-                //just do nothing
+                ShowGenericIOError();
             }
         }
 
@@ -230,6 +261,7 @@ namespace SeriesSelector
         {
             void todoItem()
             {
+
                 lock (this)
                 {
                     try
@@ -237,10 +269,11 @@ namespace SeriesSelector
                         pbh.Stop();
                         pbh.Start(series);
                     }
-                    catch (FileNotFoundException)
+                    catch
                     {
-                        //do nothing
+                        // do nothing
                     }
+
                 }
             }
 
@@ -264,6 +297,11 @@ namespace SeriesSelector
             {
                 Model.SeriesList.RemoveAt(index);
             }
+        }
+
+        private void ShowGenericIOError()
+        {
+            MessageBox.Show($"The underlying file or folder does not exist. Maybe it was renamed / removed.\nRestart Application. Re-Add the series if the error persists.", "An Ooopsie happened", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }
