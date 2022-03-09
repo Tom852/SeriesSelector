@@ -148,6 +148,14 @@ namespace SeriesSelector
         {
             var w = new OptionsWindow();
             w.Show();
+
+            w.Closed += ((o, a) =>
+            {
+                foreach (var item in Model.SeriesList)
+                {
+                    item.Redraw();
+                }
+            });
         }
 
         private void HelpBtn_OnClick(object sender, RoutedEventArgs e)

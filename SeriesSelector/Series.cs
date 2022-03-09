@@ -15,6 +15,8 @@ namespace SeriesSelector
     [Serializable]
     public class Series : INotifyPropertyChanged
     {
+        private SeriesIndexer indexer = new SeriesIndexer();
+
         public event PropertyChangedEventHandler PropertyChanged;
 
 
@@ -59,26 +61,36 @@ namespace SeriesSelector
 
         public string EpisodeDisplayName
         {
-            // todo: auslagern 'get episode and season', bei missing file erkennen und suchen.
             get
             {
                 try
                 {
                     var (hasError, message) = Validate();
-                    if (!string.IsNullOrEmpty(message))
+                    if (hasError)
                     {
                         return message;
                     }
 
-                    Regex r = new Regex(@"(.* - )([0-3]?\d[x\-_eE]?(\d{2}).*)");
-                    Match m = r.Match(this.CurrentFileName);
-                    if (m.Success)
+                    if (!Properties.Settings.Default.IsSeriesMode)
                     {
-                        return m.Groups[2].Value;
+                        return this.CurrentFileName;
+                    }
+
+                    var data = this.indexer.GetSeasonAndIndex(this.CurrentFileName);
+                    if (!data.success)
+                    {
+                        return this.CurrentFileName;
+                    }
+
+                    var seasonTwoDigit = data.season.ToString("d2");
+                    var episodeTwoDigit = data.episode.ToString("d2");
+                    if (data.hasName)
+                    {
+                        return $"{seasonTwoDigit}x{episodeTwoDigit}: {data.episodeName.ToUpper()}"; // todo would be nice not to overwrite casing.
                     }
                     else
                     {
-                        return this.CurrentFileName;
+                        return $"Season {seasonTwoDigit} Episode {episodeTwoDigit}";
                     }
                 }
                 catch
@@ -191,27 +203,48 @@ namespace SeriesSelector
 
             if (!Directory.Exists(this.FolderPath))
             {
-                return (true, "Error - Folder not Found");
+                return (true, "Folder not found");
             }
 
-            if (this.CurrentFileName != null && File.Exists(Path.Combine(this.FolderPath, this.CurrentFileName)))
+            if (string.IsNullOrEmpty(this.CurrentFileName))
+            {
+                return (true, "Current file data not available");
+            }
+
+            if (File.Exists(Path.Combine(this.FolderPath, this.CurrentFileName)))
             {
                 return (false, string.Empty);
 
             }
 
-            if (GetFileList().Any())
+            if (!GetFileList().Any())
             {
-                var firstFile = GetFileList().First();
-                // could just reset to first file.... not sure.
-                return (true, $"File '{this.CurrentFileName}' was not found");
-
+                return (true, "Folder empty");
             }
-            else
+
+            if (Properties.Settings.Default.IsSeriesMode)
             {
-                return (true, "Error - Folder empty");
-
+                var wantedSeriesIndexes = indexer.GetSeasonAndIndex(this.CurrentFileName);
+                if (wantedSeriesIndexes.success) {
+                    foreach (var file in GetFileList())
+                    {
+                        var candidateIndexes = indexer.GetSeasonAndIndex(file);
+                        if (candidateIndexes.success && candidateIndexes.season == wantedSeriesIndexes.season && candidateIndexes.episode == wantedSeriesIndexes.episode)
+                        {
+                            this.CurrentFileName = file;
+                            return (true, $"File not found. Series Mode reset file to {file}");
+                        }
+                    }
+                }
             }
+
+            return (true, $"File '{this.CurrentFileName}' not found");
+
+        }
+
+        public void Redraw()
+        {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(EpisodeDisplayName)));
         }
     }
 }

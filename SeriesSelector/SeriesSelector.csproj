@@ -65,6 +65,7 @@
     <Compile Include="Clock.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FileListCache.cs" />
+    <Compile Include="Series.cs" />
     <Compile Include="UsageEnvironments.cs" />
     <Compile Include="PersistenceMaster.cs" />
     <Compile Include="PositionMaster.cs" />
@@ -74,7 +75,7 @@
     <Compile Include="ProgressToVisibilityConverter.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="RegistryStuf.cs" />
-    <Compile Include="Series.cs" />
+    <Compile Include="SeriesIndexer.cs" />
     <Compile Include="SeriesViewModel.cs" />
     <Compile Include="TrulyObservableCollection.cs" />
     <Compile Include="OptionsWindow.xaml.cs">

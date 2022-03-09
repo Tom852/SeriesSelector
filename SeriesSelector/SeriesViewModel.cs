@@ -34,5 +34,6 @@ namespace SeriesSelector
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
     }
 }
