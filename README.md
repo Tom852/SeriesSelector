@@ -20,7 +20,7 @@ The state will be rememebered, thus, the next day, you can directly continue to 
 
 
 ## Download
-[Series Selector](https://github.com/Tom852/SeriesSelector/releases/tag/V1)
+[Series Selector](https://github.com/Tom852/SeriesSelector/releases)
 
 ##  Usabilty Hints
 * To delete a series, mark it and press delete.
