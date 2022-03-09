@@ -110,8 +110,10 @@ namespace TestProject
             var input = "Rick and Morty - 05x01 - Versauter Feind.mkv";
             var result = this.testee.GetSeasonAndIndex(input);
             Assert.IsTrue(result.hasName);
-            Assert.AreEqual("versauter feind", result.episodeName); // todo: casing
+            Assert.AreEqual("Versauter Feind", result.episodeName);
         }
+
+
 
         [Test]
         public void DetectsNameForNonNamedFile()
@@ -134,7 +136,16 @@ namespace TestProject
             var input = "Malcolm Mittendrin - 1x11 - Der Sündenbock.mpg";
             var result = this.testee.GetSeasonAndIndex(input);
             Assert.IsTrue(result.hasName);
-            Assert.AreEqual("der sündenbock", result.episodeName); // todo: casing
+            Assert.AreEqual("Der Sündenbock", result.episodeName); // todo: casing
+        }
+
+        [Test]
+        public void DetectsNameCasingCorrectly()
+        {
+            var input = "Rick and Morty - 05x01 - Versauter Feind(heute) (heute) und morgen-nicht-Nicht... immer.mkv";
+            var result = this.testee.GetSeasonAndIndex(input);
+            Assert.IsTrue(result.hasName);
+            Assert.AreEqual("Versauter Feind(heute) (heute) und morgen-nicht-Nicht... immer", result.episodeName);
         }
 
     }

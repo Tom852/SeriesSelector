@@ -134,9 +134,9 @@ namespace SeriesSelector
                     fs.Close();
                 }
 
-                    File.SetAttributes(dataFile, FileAttributes.Normal);
+                File.SetAttributes(dataFile, FileAttributes.Normal);
                 File.WriteAllText(dataFile, xmlResult);
-                    File.SetAttributes(dataFile, FileAttributes.Hidden);
+                File.SetAttributes(dataFile, FileAttributes.Hidden);
             }
         }
     }

@@ -137,6 +137,29 @@ namespace SeriesSelector
             RemoveSeries(s, index);
         }
 
+        private void ResetBtn_OnClick(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult messageBoxResult = MessageBox.Show(
+                 $"Are you sure to reset this folder's file index?", "Reset",
+                 MessageBoxButton.OKCancel, MessageBoxImage.Exclamation);
+            if (messageBoxResult == MessageBoxResult.Cancel)
+            {
+                return;
+
+            }
+
+            var index = GetIndexOfElementThatWasClicked(sender);
+            Series s = Model.SeriesList[index];
+            try
+            {
+                s.ResetToFirstFile();
+            }
+            catch
+            {
+                MessageBox.Show($"Resetting not possible. The underlying folder may not exist or is empty.\nRe-Add the series if the error persists.", "An Ooopsie happened", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private void EBtn_OnClick(object sender, RoutedEventArgs e)
         {
             var index = GetIndexOfElementThatWasClicked(sender);
@@ -165,7 +188,7 @@ namespace SeriesSelector
 
         private void DollarBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Feel free to donate with Paypal to thomaskistler (at) bluewin (dot) ch", "Donate", System.Windows.MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("Feel free to donate with Paypal", "Donate", System.Windows.MessageBoxButton.OK, MessageBoxImage.Information);
             System.Diagnostics.Process.Start("https://www.paypal.me/tomk453");
         }
 
@@ -309,7 +332,7 @@ namespace SeriesSelector
 
         private void ShowGenericIOError()
         {
-            MessageBox.Show($"The underlying file or folder does not exist. Maybe it was renamed / removed.\nRestart Application. Re-Add the series if the error persists.", "An Ooopsie happened", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show($"The underlying file or folder does not exist or is empty. Maybe it was renamed / removed.\nReset Series. Re-Add the series if the error persists.", "An Ooopsie happened", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

@@ -57,12 +57,41 @@ namespace SeriesSelector
                 int.TryParse(m.Groups[2].Value, out int e);
                 bool hasName = m.Groups[3].Value != string.Empty;
                 string name = m.Groups[4].Value;
+                name = HotFixName(name);
                 return (true, s, e, hasName, name);
             }
             else
             {
                 return (false, 0, 0, false, string.Empty);
             }
+        }
+
+        private string HotFixName(string name)
+        {
+            string FirstCharUpper(string word)
+                => word.Length < 2 ? word : char.ToUpper(word[0]) + word.Substring(1);
+
+            var words = name.Split(' ');
+            string result = string.Empty;
+            bool isFirst = true;
+            foreach (var word in words)
+            {
+                if (isFirst)
+                {
+                    result += FirstCharUpper(word);
+                    isFirst = false;
+                }
+                else if(word.Length > 3)
+                {
+                    result += ' ';
+                    result += FirstCharUpper(word);
+                } else
+                {
+                    result += ' ';
+                    result += word;
+                }
+            }
+            return result;
         }
 
         private string FilterCommonMisleadingNumbers(string original)

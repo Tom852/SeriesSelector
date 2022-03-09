@@ -31,19 +31,19 @@
                 <Label Content="Select a Series to play" DockPanel.Dock="Left"
                        VerticalAlignment="Center" FontSize="24 pt" Margin="10"
                        FontWeight="Heavy" Foreground="AliceBlue" />
-                <Button Content="+" Style="{StaticResource TopLayerButton}"
+                <Button Content="➕" Style="{StaticResource TopLayerButton}"
                         Click="PlusBtn_OnClick" DockPanel.Dock="Right" Margin="10 20 15 20"
                         ToolTip="Add Series"/>
-                <Button Content="?" Style="{StaticResource TopLayerButton}"
+                <Button Content="ℹ" Style="{StaticResource TopLayerButton}"
                         Click="HelpBtn_OnClick" DockPanel.Dock="Right"
                         ToolTip="Pro Tips"/>
-                <Button Content="$" Style="{StaticResource TopLayerButton}"
+                <Button Content="💰" Style="{StaticResource TopLayerButton}"
                         Click="DollarBtn_OnClick" DockPanel.Dock="Right"
                         ToolTip="Donate"/>
-                <Button Content="O" Style="{StaticResource TopLayerButton}"
+                <Button Content="⚙" Style="{StaticResource TopLayerButton}"
                         Click="OptionsBtn_OnClick" DockPanel.Dock="Right"
                         ToolTip="Options"/>
-                <Button Content="Z" Style="{StaticResource TopLayerButton}"
+                <Button Content="💤" Style="{StaticResource TopLayerButton}"
                         Background="#330000"
                         Click="ShutdownBtn_OnClick" DockPanel.Dock="Right"
                         ToolTip="Shutdown PC"/>
@@ -83,12 +83,18 @@
                                     Name="IncBtn" Content="&gt;"
                                     Click="IncBtn_OnClick" MouseRightButtonDown="IncBtn_OnRightClick"
                                     ToolTip="Decrease Marker by 1 or 20 (Right Click) Episodes"/>
+
                             <Button DockPanel.Dock="Right" Style="{StaticResource SideButton}"
-                                    Name="DeleteBtn" Content="X" Margin="5 10 10 10"
+                                    Name="DeleteBtn" Content="❌" Margin="5 10 10 10"
+                                    Background="#330000"
                                     Click="XBtn_OnClick"
                                     ToolTip="Remove List Entry"/>
                             <Button DockPanel.Dock="Right" Style="{StaticResource SideButton}"
-                                    Name="FindBtn" Content="E"
+                                    Name="ResetBtn" Content="↺"
+                                    Click="ResetBtn_OnClick"
+                                    ToolTip="Reset to first file"/>
+                            <Button DockPanel.Dock="Right" Style="{StaticResource SideButton}"
+                                    Name="FindBtn" Content="📁"
                                     Click="EBtn_OnClick" 
                                     ToolTip="Open in Explorer"/>
                             <Label  DockPanel.Dock="Left"  Name="Label" Content="{Binding EpisodeDisplayName}"

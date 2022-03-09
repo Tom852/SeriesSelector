@@ -86,7 +86,7 @@ namespace SeriesSelector
                     var episodeTwoDigit = data.episode.ToString("d2");
                     if (data.hasName)
                     {
-                        return $"{seasonTwoDigit}x{episodeTwoDigit}: {data.episodeName.ToUpper()}"; // todo would be nice not to overwrite casing.
+                        return $"{seasonTwoDigit}x{episodeTwoDigit}: {data.episodeName}";
                     }
                     else
                     {
@@ -109,8 +109,7 @@ namespace SeriesSelector
 
         private List<string> GetFileList()
         {
-            // is cached because i call this method 'too' often and may be slow on slow network devices - leads to bad UX
-            // note - did not solve the problem, may be c ached anyway.
+            // whith a little cache i can call this method extensively.
             Func<List<string>> filegetter = () =>
                  Directory.GetFiles(FolderPath)
                 .Where(f => !File.GetAttributes(f).HasFlag(FileAttributes.Hidden))
@@ -155,6 +154,12 @@ namespace SeriesSelector
                     CurrentFileName = this.GetFileList()[currentIndex + amount];
                 }
 
+        }
+
+        public void ResetToFirstFile()
+        {
+            var files = GetFileList();
+            this.CurrentFileName = files.First();
         }
 
         public void Decrease(int amount = 1)

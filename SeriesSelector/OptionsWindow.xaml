@@ -6,7 +6,7 @@
         xmlns:properties="clr-namespace:SeriesSelector.Properties"
         xmlns:local="clr-namespace:SeriesSelector"
         mc:Ignorable="d"
-        Title="Options" Height="218" Width="552.055">
+        Title="Options" Height="218" Width="600">
 
     <Window.Resources>
                 <ResourceDictionary Source="Resources.xaml" />
@@ -28,14 +28,14 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="40px"/>
+                <ColumnDefinition Width="50px"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <Label Grid.Row="0" Grid.Column="0"
+            <Label Grid.Row="0" Grid.Column="0" Padding="10"
                     Content="Usage Environment" FontSize="16pt" FontWeight="Regular" Foreground="White" />
             <ComboBox Grid.Row="0" Grid.Column="1" Height="24px" Width="200px" HorizontalAlignment="Left" Name="ComboWomboBox"
                       SelectedValuePath="Content"
@@ -43,7 +43,7 @@
                 <ComboBoxItem>Local</ComboBoxItem>
                 <ComboBoxItem>Network</ComboBoxItem>
             </ComboBox>
-            <Label Grid.Row="0" Grid.Column="2" Content="(i)" Foreground ="#69F" FontSize="14pt" FontFamily="Consolas" VerticalContentAlignment="Center"
+            <Label Grid.Row="0" Grid.Column="2" Content="(i)" Padding="10" Foreground ="#69F" FontSize="14pt" FontFamily="Consolas" VerticalContentAlignment="Center"
                    ToolTip="Local: Stores the current index on your local machine. Network: Also stores and prioritizes the index inside the data folder. Good when you access the folder from multiple machines on your Nas." />
 
             <Label Grid.Row="1" Grid.Column="0"
@@ -51,7 +51,7 @@
             <CheckBox HorizontalAlignment="Left" VerticalAlignment="Center" Name="SeriesModeCheckbox" Grid.Row="1" Grid.Column="1" Content="Yo"
                       IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=IsSeriesMode}">
             </CheckBox>
-            <Label Grid.Row="1" Grid.Column="2" Content="(i)" Foreground ="#69F" FontSize="14pt" FontFamily="Consolas" VerticalContentAlignment="Center"
+            <Label Grid.Row="1" Grid.Column="2" Content="(i)" Padding="10" Foreground ="#69F" FontSize="14pt" FontFamily="Consolas" VerticalContentAlignment="Center"
                    ToolTip="Tries to identify elements with [Season]x[Episode] and can then detect renamings." />
 
 
