@@ -39,7 +39,7 @@ namespace SeriesSelector
 
                 };
 
-        public (bool success, int season, int episode, bool hasName, string episodeName) GetSeasonAndIndex(string filenameOrPath)
+        public IndexedEpisode GetSeasonAndIndex(string filenameOrPath)
         {
             string workingString = filenameOrPath.Split('/', '\\').ToList().Last();
             workingString = workingString.ToLower();
@@ -58,11 +58,24 @@ namespace SeriesSelector
                 bool hasName = m.Groups[3].Value != string.Empty;
                 string name = m.Groups[4].Value;
                 name = HotFixName(name);
-                return (true, s, e, hasName, name);
+                return new IndexedEpisode
+                {
+                    OriginalFileName = filenameOrPath,
+                    HasIndexes = true,
+                    EpisodeIndex = e,
+                    SeasonIndex = s,
+                    EpisodeName = name,
+                    HasEpisodeName = hasName
+                };
             }
             else
             {
-                return (false, 0, 0, false, string.Empty);
+                return new IndexedEpisode
+                {
+                    OriginalFileName = filenameOrPath,
+                    HasIndexes = false,
+                    HasEpisodeName = false
+                };
             }
         }
 

@@ -2,6 +2,6 @@
 {
     public enum UsageEnvironments
     {
-        Local, Network
+        Local, Nas
     }
 }

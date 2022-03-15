@@ -41,10 +41,10 @@
                       SelectedValuePath="Content"
                       SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=UsageEnv}">
                 <ComboBoxItem>Local</ComboBoxItem>
-                <ComboBoxItem>Network</ComboBoxItem>
+                <ComboBoxItem>Nas</ComboBoxItem>
             </ComboBox>
             <Label Grid.Row="0" Grid.Column="2" Content="(i)" Padding="10" Foreground ="#69F" FontSize="14pt" FontFamily="Consolas" VerticalContentAlignment="Center"
-                   ToolTip="Local: Stores the current index on your local machine. Network: Also stores and prioritizes the index inside the data folder. Good when you access the folder from multiple machines on your Nas." />
+                   ToolTip="Local: Stores the current index on your local machine. Nas: Also stores and prioritizes the index inside the data folder. Adds a file to the folder, but good when you access a network folder from multiple machines." />
 
             <Label Grid.Row="1" Grid.Column="0"
                     Content="Series Mode" FontSize="16pt" FontWeight="Regular" Foreground="White" />
@@ -52,7 +52,7 @@
                       IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=IsSeriesMode}">
             </CheckBox>
             <Label Grid.Row="1" Grid.Column="2" Content="(i)" Padding="10" Foreground ="#69F" FontSize="14pt" FontFamily="Consolas" VerticalContentAlignment="Center"
-                   ToolTip="Tries to identify elements with [Season]x[Episode] and can then detect renamings." />
+                   ToolTip="Tries to identify files with [Season] and [Episode]. Orders files accordingly, even if lexicographically different." />
 
 
         </Grid>

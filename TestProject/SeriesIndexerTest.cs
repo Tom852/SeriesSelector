@@ -19,9 +19,9 @@ namespace TestProject
         {
             var input = "the.walking.dead.s11e05.german.dl.1080p.web.h264.internal-wayne.mkv";
             var result = this.testee.GetSeasonAndIndex(input);
-            Assert.IsTrue(result.success);
-            Assert.AreEqual(11, result.season);
-            Assert.AreEqual(5, result.episode);
+            Assert.IsTrue(result.HasIndexes);
+            Assert.AreEqual(11, result.SeasonIndex);
+            Assert.AreEqual(5, result.EpisodeIndex);
         }
 
         [Test]
@@ -29,9 +29,9 @@ namespace TestProject
         {
             var input = "The.Walking.Dead.S11E10.GERMAN.DL.DUBBED.1080p.WEB.h264-VoDTv.mkv";
             var result = this.testee.GetSeasonAndIndex(input);
-            Assert.IsTrue(result.success);
-            Assert.AreEqual(11, result.season);
-            Assert.AreEqual(10, result.episode);
+            Assert.IsTrue(result.HasIndexes);
+            Assert.AreEqual(11, result.SeasonIndex);
+            Assert.AreEqual(10, result.EpisodeIndex);
         }
 
         [Test]
@@ -39,9 +39,9 @@ namespace TestProject
         {
             var input = "Malcolm Mittendrin - 1x11 - Der Sündenbock.mpg";
             var result = this.testee.GetSeasonAndIndex(input);
-            Assert.IsTrue(result.success);
-            Assert.AreEqual(1, result.season);
-            Assert.AreEqual(11, result.episode);
+            Assert.IsTrue(result.HasIndexes);
+            Assert.AreEqual(1, result.SeasonIndex);
+            Assert.AreEqual(11, result.EpisodeIndex);
         }
 
         [Test]
@@ -49,9 +49,9 @@ namespace TestProject
         {
             var input = "tvs-jerks-7p-mdhd-avc-107-aaaa.mkv";
             var result = this.testee.GetSeasonAndIndex(input);
-            Assert.IsTrue(result.success);
-            Assert.AreEqual(1, result.season);
-            Assert.AreEqual(7, result.episode);
+            Assert.IsTrue(result.HasIndexes);
+            Assert.AreEqual(1, result.SeasonIndex);
+            Assert.AreEqual(7, result.EpisodeIndex);
         }
 
         [Test]
@@ -59,9 +59,9 @@ namespace TestProject
         {
             var input = "tvs-jerks-7p-mdhd-avc-S05E07.mkv";
             var result = this.testee.GetSeasonAndIndex(input);
-            Assert.IsTrue(result.success);
-            Assert.AreEqual(5, result.season);
-            Assert.AreEqual(7, result.episode);
+            Assert.IsTrue(result.HasIndexes);
+            Assert.AreEqual(5, result.SeasonIndex);
+            Assert.AreEqual(7, result.EpisodeIndex);
         }
 
         [Test]
@@ -69,9 +69,9 @@ namespace TestProject
         {
             var input = "Morgen_hoer_ich_auf_S01E04_16.01.23_21-45_zdf_60_TVOON_DE.mpg.HD.avi";
             var result = this.testee.GetSeasonAndIndex(input);
-            Assert.IsTrue(result.success);
-            Assert.AreEqual(1, result.season);
-            Assert.AreEqual(4, result.episode);
+            Assert.IsTrue(result.HasIndexes);
+            Assert.AreEqual(1, result.SeasonIndex);
+            Assert.AreEqual(4, result.EpisodeIndex);
         }
 
         [Test]
@@ -79,9 +79,9 @@ namespace TestProject
         {
             var input = "Rick and Morty - 05x01 - Versauter Feind.mkv";
             var result = this.testee.GetSeasonAndIndex(input);
-            Assert.IsTrue(result.success);
-            Assert.AreEqual(5, result.season);
-            Assert.AreEqual(1, result.episode);
+            Assert.IsTrue(result.HasIndexes);
+            Assert.AreEqual(5, result.SeasonIndex);
+            Assert.AreEqual(1, result.EpisodeIndex);
         }
 
         [Test]
@@ -89,9 +89,9 @@ namespace TestProject
         {
             var input = "Die Simpsons - 32x18 - Burger Kings.mkv";
             var result = this.testee.GetSeasonAndIndex(input);
-            Assert.IsTrue(result.success);
-            Assert.AreEqual(32, result.season);
-            Assert.AreEqual(18, result.episode);
+            Assert.IsTrue(result.HasIndexes);
+            Assert.AreEqual(32, result.SeasonIndex);
+            Assert.AreEqual(18, result.EpisodeIndex);
         }
 
         [Test]
@@ -99,9 +99,9 @@ namespace TestProject
         {
             var input = "Blacklist - 08x20 - Godwin Page (Nr. 141).mkv";
             var result = this.testee.GetSeasonAndIndex(input);
-            Assert.IsTrue(result.success);
-            Assert.AreEqual(8, result.season);
-            Assert.AreEqual(20, result.episode);
+            Assert.IsTrue(result.HasIndexes);
+            Assert.AreEqual(8, result.SeasonIndex);
+            Assert.AreEqual(20, result.EpisodeIndex);
         }
 
         [Test]
@@ -109,8 +109,8 @@ namespace TestProject
         {
             var input = "Rick and Morty - 05x01 - Versauter Feind.mkv";
             var result = this.testee.GetSeasonAndIndex(input);
-            Assert.IsTrue(result.hasName);
-            Assert.AreEqual("Versauter Feind", result.episodeName);
+            Assert.IsTrue(result.HasEpisodeName);
+            Assert.AreEqual("Versauter Feind", result.EpisodeName);
         }
 
 
@@ -120,14 +120,14 @@ namespace TestProject
         {
             var input = "The.Walking.Dead.S11E10.GERMAN.DL.DUBBED.1080p.WEB.h264-VoDTv.mkv";
             var result = this.testee.GetSeasonAndIndex(input);
-            Assert.IsFalse(result.hasName);
+            Assert.IsFalse(result.HasEpisodeName);
         }
         [Test]
         public void DetectsNameForNonNamedFile2()
         {
             var input = "Morgen_hoer_ich_auf_S01E04_16.01.23_21-45_zdf_60_TVOON_DE.mpg.HD.avi";
             var result = this.testee.GetSeasonAndIndex(input);
-            Assert.IsFalse(result.hasName);
+            Assert.IsFalse(result.HasEpisodeName);
         }
 
         [Test]
@@ -135,8 +135,8 @@ namespace TestProject
         {
             var input = "Malcolm Mittendrin - 1x11 - Der Sündenbock.mpg";
             var result = this.testee.GetSeasonAndIndex(input);
-            Assert.IsTrue(result.hasName);
-            Assert.AreEqual("Der Sündenbock", result.episodeName); // todo: casing
+            Assert.IsTrue(result.HasEpisodeName);
+            Assert.AreEqual("Der Sündenbock", result.EpisodeName); // todo: casing
         }
 
         [Test]
@@ -144,8 +144,8 @@ namespace TestProject
         {
             var input = "Rick and Morty - 05x01 - Versauter Feind(heute) (heute) und morgen-nicht-Nicht... immer.mkv";
             var result = this.testee.GetSeasonAndIndex(input);
-            Assert.IsTrue(result.hasName);
-            Assert.AreEqual("Versauter Feind(heute) (heute) und morgen-nicht-Nicht... immer", result.episodeName);
+            Assert.IsTrue(result.HasEpisodeName);
+            Assert.AreEqual("Versauter Feind(heute) (heute) und morgen-nicht-Nicht... immer", result.EpisodeName);
         }
 
     }

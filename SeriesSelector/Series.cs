@@ -42,10 +42,12 @@ namespace SeriesSelector
         public Series(string folderPath)
         {
             FolderPath = folderPath;
-            CurrentFileName = this.GetFileList().FirstOrDefault();
+            var preExistingFileIndex = new PersistenceMaster().LoadCurrentFileNameFromSeriesFolder(folderPath);
+
+            CurrentFileName = preExistingFileIndex ?? this.GetFileList().FirstOrDefault()?.OriginalFileName;
         }
 
-        public Series() { } // for serializer
+        public Series() { }
 
 
         public string SeriesDisplayName
@@ -77,16 +79,16 @@ namespace SeriesSelector
                     }
 
                     var data = this.indexer.GetSeasonAndIndex(this.CurrentFileName);
-                    if (!data.success)
+                    if (!data.HasIndexes)
                     {
                         return this.CurrentFileName;
                     }
 
-                    var seasonTwoDigit = data.season.ToString("d2");
-                    var episodeTwoDigit = data.episode.ToString("d2");
-                    if (data.hasName)
+                    var seasonTwoDigit = data.SeasonIndex.ToString("d2");
+                    var episodeTwoDigit = data.EpisodeIndex.ToString("d2");
+                    if (data.HasEpisodeName)
                     {
-                        return $"{seasonTwoDigit}x{episodeTwoDigit}: {data.episodeName}";
+                        return $"{seasonTwoDigit}x{episodeTwoDigit}: {data.EpisodeName}";
                     }
                     else
                     {
@@ -107,7 +109,7 @@ namespace SeriesSelector
 
         private FileListCache fileListCache = new FileListCache();
 
-        private List<string> GetFileList()
+        private List<IndexedEpisode> GetFileList()
         {
             // whith a little cache i can call this method extensively.
             Func<List<string>> filegetter = () =>
@@ -148,18 +150,39 @@ namespace SeriesSelector
         public void Increase(int amount = 1)
         {
 
-                if (CanIncrease(amount))
+            if (CanIncrease(amount))
+            {
+                var currentIndex = this.GetIndexOfCurrentEpisode();
+                var candidate = this.GetFileList()[currentIndex + amount].OriginalFileName;
+
+                var originalIndexes = indexer.GetSeasonAndIndex(this.CurrentFileName);
+                if (amount == 1 && Properties.Settings.Default.IsSeriesMode && originalIndexes.HasIndexes)
                 {
-                    var currentIndex = this.GetIndexOfCurrentEpisode();
-                    CurrentFileName = this.GetFileList()[currentIndex + amount];
+                    // little booster logic for single series increase... if two times same episode is present, skips it.
+                    // könnt man auch bei descrease machen und ja, naja, so die frage ob man das überhaupt will.
+                    var nextIndexes = indexer.GetSeasonAndIndex(candidate);
+                    int i = currentIndex + amount + 1;
+                    int maxIndex = this.GetFileList().Count;
+                    while (i < maxIndex &&
+                        nextIndexes.HasIndexes &&
+                        originalIndexes.SeasonIndex == nextIndexes.SeasonIndex &&
+                        originalIndexes.EpisodeIndex == nextIndexes.EpisodeIndex)
+                    {
+                        i++;
+                        candidate = this.GetFileList()[i].OriginalFileName;
+                        nextIndexes = indexer.GetSeasonAndIndex(candidate);
+                    }
                 }
 
+                this.CurrentFileName = candidate;
+                return;
+            }
         }
 
         public void ResetToFirstFile()
         {
             var files = GetFileList();
-            this.CurrentFileName = files.First();
+            this.CurrentFileName = files.First().OriginalFileName;
         }
 
         public void Decrease(int amount = 1)
@@ -167,7 +190,7 @@ namespace SeriesSelector
             if (CanDecrease(amount))
             {
                 var currentIndex = this.GetIndexOfCurrentEpisode();
-                CurrentFileName = this.GetFileList()[currentIndex - amount];
+                CurrentFileName = this.GetFileList()[currentIndex - amount].OriginalFileName;
             }
         }
 
@@ -192,7 +215,7 @@ namespace SeriesSelector
 
         private int GetIndexOfCurrentEpisode()
         {
-            var index = this.GetFileList().IndexOf(this.CurrentFileName);
+            var index = this.GetFileList().Select(a => a.OriginalFileName).ToList().IndexOf(this.CurrentFileName);
             if (index == -1)
             {
                 throw new FileNotFoundException("File not found"); // would work otherwise, but unexpecedtily reset your state
@@ -230,13 +253,13 @@ namespace SeriesSelector
             if (Properties.Settings.Default.IsSeriesMode)
             {
                 var wantedSeriesIndexes = indexer.GetSeasonAndIndex(this.CurrentFileName);
-                if (wantedSeriesIndexes.success) {
+                if (wantedSeriesIndexes.HasIndexes)
+                {
                     foreach (var file in GetFileList())
                     {
-                        var candidateIndexes = indexer.GetSeasonAndIndex(file);
-                        if (candidateIndexes.success && candidateIndexes.season == wantedSeriesIndexes.season && candidateIndexes.episode == wantedSeriesIndexes.episode)
+                        if (file.HasIndexes && file.SeasonIndex == wantedSeriesIndexes.SeasonIndex && file.EpisodeIndex == wantedSeriesIndexes.EpisodeIndex)
                         {
-                            this.CurrentFileName = file;
+                            this.CurrentFileName = file.OriginalFileName;
                             return (true, $"File not found. Series Mode reset file to {file}");
                         }
                     }

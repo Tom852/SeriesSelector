@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
@@ -8,22 +9,21 @@ namespace SeriesSelector
     public class PersistenceMaster
     {
         private readonly string appDataFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TomsSeriesSelector/SeriesSelectorData.xml");
-        private readonly string inFolderFileName = "_SeriesSelectorData.xml";
+        private readonly string inFolderFileName = "Ξ-SeriesSelectorData.data";
 
         private XmlSerializer collectionSerializer = new XmlSerializer(typeof(TrulyObservableCollection<Series>));
-        private XmlSerializer singleSeriesSerializer = new XmlSerializer(typeof(Series));
 
         public void Persist(TrulyObservableCollection<Series> list)
         {
             var env = Properties.Settings.Default.UsageEnv;
             if (env == UsageEnvironments.Local.ToString())
             {
-                SaveIndexesToAppdata(list);
+                SaveAllDataToAppData(list);
             }
-            else if (env == UsageEnvironments.Network.ToString())
+            else if (env == UsageEnvironments.Nas.ToString())
             {
-                SaveIndexesToAppdata(list); // index may be ignored then
-                SaveEachIndexNetworkBased(list);
+                SaveAllDataToAppData(list);
+                SaveCurrentFileToEachFolder(list);
             }
             else
             {
@@ -40,46 +40,50 @@ namespace SeriesSelector
             {
                 return LoadFromAppData();
             }
-            else if (env == UsageEnvironments.Network.ToString())
+            else if (env == UsageEnvironments.Nas.ToString())
             {
                 var appDataData = LoadFromAppData();
                 var result = new TrulyObservableCollection<Series>();
 
-                foreach (var item in appDataData)
+                foreach (var itemFromAppData in appDataData)
                 {
-                    result.Add(LoadDataFromSeriesFolder(item)); // abusing series as path kinda
+                    var currentFileFromInFolder = LoadCurrentFileNameFromSeriesFolder(itemFromAppData.FolderPath);
+                    var folder = itemFromAppData.FolderPath;
+                    var file = currentFileFromInFolder ?? itemFromAppData.CurrentFileName;
+                    var series = new Series() { FolderPath = folder, CurrentFileName = file };
+                    result.Add(series);
                 }
                 return result;
             }
             else
             {
-                throw new ApplicationException("Unknown usage env");
+                Properties.Settings.Default.UsageEnv = UsageEnvironments.Local.ToString();
+                Properties.Settings.Default.Save();
+                throw new ApplicationException("Unknown usage env - has been reset");
             }
         }
 
-        private Series LoadDataFromSeriesFolder(Series item)
+        public string LoadCurrentFileNameFromSeriesFolder(string fodlerPath)
         {
             try
             {
 
-                string dataFile = Path.Combine(item.FolderPath, inFolderFileName);
+                string dataFile = Path.Combine(fodlerPath, inFolderFileName);
                 if (File.Exists(dataFile))
                 {
 
-                    string xml = File.ReadAllText(dataFile);
-                    TextReader tr = new StringReader(xml);
-
-                    var data = (Series)singleSeriesSerializer.Deserialize(tr);
-                    return data;
+                    var text = File.ReadAllLines(dataFile, Encoding.UTF8).First();
+                    var candidateFiel = Path.Combine(fodlerPath, text);
+                    if (File.Exists(candidateFiel))
+                    {
+                        return text;
+                    }
                 }
-                else
-                {
-                    return item;
-                }
+                return null;
             }
             catch
             {
-                return item;
+                return null;
             }
         }
 
@@ -107,7 +111,7 @@ namespace SeriesSelector
         }
 
 
-        private void SaveIndexesToAppdata(TrulyObservableCollection<Series> list)
+        private void SaveAllDataToAppData(TrulyObservableCollection<Series> list)
         {
             StringBuilder sb = new StringBuilder();
             StringWriter sw = new StringWriter(sb);
@@ -118,24 +122,18 @@ namespace SeriesSelector
         }
 
 
-        private void SaveEachIndexNetworkBased(TrulyObservableCollection<Series> list)
+        private void SaveCurrentFileToEachFolder(TrulyObservableCollection<Series> list)
         {
             foreach (var item in list)
             {
                 string dataFile = Path.Combine(item.FolderPath, inFolderFileName);
 
-                StringBuilder sb = new StringBuilder();
-                StringWriter sw = new StringWriter(sb);
-                singleSeriesSerializer.Serialize(sw, item);
-                string xmlResult = sw.GetStringBuilder().ToString();
-                if (!File.Exists(dataFile))
+                if (File.Exists(dataFile))
                 {
-                    var fs = File.Create(dataFile);
-                    fs.Close();
-                }
+                    File.SetAttributes(dataFile, FileAttributes.Normal);
 
-                File.SetAttributes(dataFile, FileAttributes.Normal);
-                File.WriteAllText(dataFile, xmlResult);
+                }
+                File.WriteAllText(dataFile, item.CurrentFileName, Encoding.UTF8);
                 File.SetAttributes(dataFile, FileAttributes.Hidden);
             }
         }
